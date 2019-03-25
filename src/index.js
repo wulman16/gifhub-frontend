@@ -4,6 +4,8 @@ document.addEventListener('DOMContentLoaded', () => {
   renderGifs()
   const list = document.getElementById('gif-list')
   list.addEventListener('click', handleThumbnailClick)
+  const form = document.getElementById('new-gif-form')
+  form.addEventListener('submit', handleGifSubmission)
 })
 
 function renderGifs() {
@@ -29,6 +31,7 @@ function handleThumbnailClick(e) {
 }
 
 function renderDetails(data) {
+  console.log(data)
   const detailPanel = document.getElementById('detail-panel')
   detailPanel.innerHTML = ''
 
@@ -43,7 +46,7 @@ function renderDetails(data) {
 
   const reviews = document.createElement('div')
   detailPanel.append(reviews)
-  
+
   data.reviews.forEach(review => {
     const content = document.createElement('div')
 
@@ -62,4 +65,67 @@ function renderDetails(data) {
 
     reviews.append(content)
   })
+
+  const reviewForm = document.createElement('form')
+  reviewForm.id = 'new-review-form'
+  reviewForm.dataset.gifId = data.id
+
+  const userField = document.createElement('input')
+  userField.type = 'number'
+  userField.name = 'user-id'
+  userField.placeholder = 'User ID'
+  reviewForm.append(userField)
+
+  const ratingField = document.createElement('input')
+  ratingField.type = 'number'
+  ratingField.name = 'rating'
+  ratingField.placeholder = 'Rating'
+  reviewForm.append(ratingField)
+
+  const contentField = document.createElement('textarea')
+  contentField.name = 'content'
+  contentField.placeholder = 'Type your review here!'
+  reviewForm.append(contentField)
+
+  const submitButton = document.createElement('input')
+  submitButton.type = 'submit'
+  reviewForm.append(submitButton)
+
+  detailPanel.append(reviewForm)
+
+  reviewForm.addEventListener('submit', handleReviewSubmission)
+}
+
+function handleGifSubmission(e) {
+  e.preventDefault()
+  const title = e.target.elements["title"].value
+  const url = e.target.elements["url"].value
+  const postBody = { title, url }
+  fetch(`${API}/gifs`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(postBody)
+  })
+  .then(res => console.log(res))
+}
+
+function handleReviewSubmission(e) {
+  e.preventDefault()
+  console.log(e.target.elements["content"].value)
+  const user_id = e.target.elements["user-id"].value
+  const rating = e.target.elements["rating"].value
+  const content = e.target.elements["content"].value
+  const gif_id = e.target.dataset.gifId
+  const postBody = { user_id, rating, content, gif_id }
+  console.log(postBody)
+  fetch(`${API}/reviews`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(postBody)
+  })
+  .then(res => console.log(res))
 }
