@@ -7,6 +7,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   userSignIn()
 
+  const sortButton = document.getElementById('sort')
+  sortButton.id = false
+  sortButton.addEventListener('click', sortGifs)
+
   const list = document.getElementById('gif-list')
   list.addEventListener('click', handleThumbnailClick)
 
@@ -207,4 +211,30 @@ function renderNewReview(data) {
   content.append(reviewContent)
 
   reviews.append(content)
+}
+
+function compareAvgRatings(a, b) {
+  if (a.avg_rating < b.avg_rating) {
+    return 1
+  } else if (a.avg_rating > b.avg_rating) {
+    return -1
+  } else {
+    return 0
+  }
+}
+
+function sortGifs(e) {
+  const gifs = document.getElementById('gif-list')
+  console.log(gifs)
+  gifs.innerHTML = ''
+  if (e.target.id === 'false') {
+    e.target.id = 'true'
+    fetch(`${API}/gifs`)
+    .then(res => res.json())
+    .then(data => data.sort(compareAvgRatings))
+    .then(sorted => sorted.forEach(gif => renderGifThumbnail(gif)))
+  } else {
+    e.target.id = 'false'
+    renderGifs()
+  }
 }
