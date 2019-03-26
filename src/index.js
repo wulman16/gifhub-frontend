@@ -179,7 +179,14 @@ function handleReviewSubmission(e) {
     body: JSON.stringify(postBody)
   })
   .then(res => res.json())
-  .then(data => renderNewReview(data))
+  .then(data => {
+    if (data.errors) {
+      console.error(data.errors)
+    } else {
+      renderNewReview(data)
+    }
+  })
+
   e.target.reset()
 }
 
