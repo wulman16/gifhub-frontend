@@ -1,34 +1,33 @@
-const API = `http://localhost:3000/api/v1`
+const API = `http://localhost:3000/api/v1`;
 
 let USER_NAME, USER_ID;
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener("DOMContentLoaded", () => {
   userSignIn()
-  .then(renderGifs)
+  .then(renderGifs);
 
-  const sortButton = document.getElementById('sort')
-  sortButton.id = false
-  sortButton.addEventListener('click', sortGifs)
+  const sortButton = document.getElementById("sort");
+  sortButton.id = false;
+  sortButton.addEventListener("click", sortGifs);
 
-  const list = document.getElementById('gif-list')
-  list.addEventListener('click', handleThumbnailClick)
+  const list = document.getElementById("gif-list");
+  list.addEventListener("click", handleThumbnailClick);
 
-  const form = document.getElementById('new-gif-form')
-  form.addEventListener('submit', handleGifSubmission)
-})
+  const form = document.getElementById("new-gif-form");
+  form.addEventListener("submit", handleGifSubmission);
+});
 
 function userSignIn() {
   const name = prompt("Please Sign In:");
   // console.log(USER_NAME)
-  return createUser({ name })
-  .then(json => {
+  return createUser({ name }).then(json => {
     if (json.errors) {
-      userSignIn()
+      userSignIn();
     } else {
       USER_NAME = json.name;
       USER_ID = json.id;
     }
-  })
+  });
 }
 
 function createUser(data) {
@@ -39,82 +38,82 @@ function createUser(data) {
     },
     body: JSON.stringify(data)
   })
-  .then(response => response.json())
+  .then(response => response.json());
 }
 
 function renderGifs() {
-  document.getElementById('gif-list').innerHTML = ''
+  document.getElementById("gif-list").innerHTML = "";
 
   return fetch(`${API}/gifs`)
-  .then(res => res.json())
-  .then(data => data.forEach(renderGifThumbnail))
+    .then(res => res.json())
+    .then(data => data.forEach(renderGifThumbnail));
 }
 
 function renderGifThumbnail(data) {
-  const ul = document.getElementById('gif-list')
-  const li = document.createElement('li')
+  const ul = document.getElementById("gif-list");
+  const li = document.createElement("li");
 
-  const img = document.createElement('img')
-  img.src = data.url
-  img.className = 'gif-thumbnail'
-  img.dataset.id = data.id
-  li.append(img)
+  const img = document.createElement("img");
+  img.src = data.url;
+  img.className = "gif-thumbnail";
+  img.dataset.id = data.id;
+  li.append(img);
 
-  const avgRating = document.createElement('p')
-  avgRating.id = 'gif-thumbnail-rating'
-  avgRating.textContent = data.avg_rating
-  if(data.reviews.length > 0) {
-    li.append(avgRating)
+  const avgRating = document.createElement("p");
+  avgRating.id = "gif-thumbnail-rating";
+  avgRating.textContent = data.avg_rating;
+  if (data.reviews.length > 0) {
+    li.append(avgRating);
   }
 
-  ul.append(li)
+  ul.append(li);
 }
 
 function handleThumbnailClick(e) {
-  if(e.target.tagName === 'IMG') {
+  if (e.target.tagName === "IMG") {
     fetch(`${API}/gifs/${e.target.dataset.id}`)
-    .then(res => res.json())
-    .then(renderDetails)
-    .then(renderReviewForm)
+      .then(res => res.json())
+      .then(renderDetails)
+      .then(renderReviewForm);
   }
 }
 
 function renderDetails(data) {
-  const detailPanel = document.getElementById('detail-panel')
-  detailPanel.innerHTML = ''
+  const detailPanel = document.getElementById("detail-panel");
+  detailPanel.innerHTML = "";
 
-  const title = document.createElement('h3')
-  title.textContent = data.title
-  detailPanel.append(title)
+  const title = document.createElement("h3");
+  title.textContent = data.title;
+  detailPanel.append(title);
 
-  const avgRating = document.createElement('h3')
-  avgRating.textContent = `Average Rating: ${data.avg_rating}`
-  if(data.reviews.length > 0) {
-    detailPanel.append(avgRating)
+  const avgRating = document.createElement("h3");
+  avgRating.textContent = `Average Rating: ${data.avg_rating}`;
+  if (data.reviews.length > 0) {
+    detailPanel.append(avgRating);
   }
 
-  const gif = document.createElement('img')
-  gif.src = data.url
-  gif.className = 'gif-detail'
-  detailPanel.append(gif)
+  const gif = document.createElement("img");
+  gif.src = data.url;
+  gif.className = "gif-detail";
+  detailPanel.append(gif);
 
-  const reviews = document.createElement('div')
-  reviews.id = "reviews"
-  detailPanel.append(reviews)
+  const reviews = document.createElement("div");
+  reviews.id = "reviews";
+  detailPanel.append(reviews);
 
-  data.reviews.forEach(renderReview)
+  data.reviews.forEach(renderReview);
 
   // renderReviewForm(data)
-  return data
+  return data;
 }
 
 function renderReviewForm(data) {
-  const detailPanel = document.getElementById('detail-panel')
+  const detailPanel = document.getElementById("detail-panel");
 
-  const reviewForm = document.createElement('form')
-  reviewForm.id = 'new-review-form'
-  reviewForm.dataset.gifId = data.id
-  reviewForm.dataset.userId = USER_ID
+  const reviewForm = document.createElement("form");
+  reviewForm.id = "new-review-form";
+  reviewForm.dataset.gifId = data.id;
+  reviewForm.dataset.userId = USER_ID;
 
   // const userField = document.createElement('input')
   // userField.type = 'number'
@@ -128,121 +127,129 @@ function renderReviewForm(data) {
   // ratingField.placeholder = 'Rating'
   // reviewForm.append(ratingField)
 
-  const ratingField = document.createElement('select')
-  ratingField.name = 'rating'
-  const defaultOption = document.createElement('option')
-  defaultOption.value = ''
-  defaultOption.selected = true
-  defaultOption.disabled = true
-  defaultOption.hidden = true
-  defaultOption.textContent = 'Select a Rating'
-  ratingField.append(defaultOption)
+  const ratingField = document.createElement("select");
+  ratingField.name = "rating";
+
+  const defaultOption = document.createElement("option");
+  defaultOption.value = "";
+  defaultOption.selected = true;
+  defaultOption.disabled = true;
+  defaultOption.hidden = true;
+  defaultOption.textContent = "Select a Rating";
+  ratingField.append(defaultOption);
+
   for (i = 0; i <= 5; i++) {
-    const option = document.createElement('option')
-    option.value = i
-    option.textContent = i
-    ratingField.append(option)
+    const option = document.createElement("option");
+    option.value = i;
+    option.textContent = i;
+    ratingField.append(option);
   }
-  reviewForm.append(ratingField)
 
-  const contentField = document.createElement('textarea')
-  contentField.name = 'content'
-  contentField.placeholder = 'Type your review here!'
-  reviewForm.append(contentField)
+  reviewForm.append(ratingField);
 
-  const submitButton = document.createElement('input')
-  submitButton.type = 'submit'
-  reviewForm.append(submitButton)
+  const contentField = document.createElement("textarea");
+  contentField.name = "content";
+  contentField.placeholder = "Type your review here!";
+  reviewForm.append(contentField);
 
-  detailPanel.append(reviewForm)
+  const submitButton = document.createElement("input");
+  submitButton.type = "submit";
+  reviewForm.append(submitButton);
 
-  reviewForm.addEventListener('submit', handleReviewSubmission)
+  detailPanel.append(reviewForm);
+
+  reviewForm.addEventListener("submit", handleReviewSubmission);
 }
 
 function renderReview(data) {
-  const reviews = document.getElementById('reviews')
-  const content = document.createElement('div')
+  const reviews = document.getElementById("reviews");
+  const content = document.createElement("div");
+  content.className = "review-card"
 
-  const author = document.createElement('h4')
-  author.textContent = data.user_name
-  content.append(author)
+  const author = document.createElement("h4");
+  author.textContent = data.user_name;
+  content.append(author);
 
-  const rating = document.createElement('h5')
-  rating.textContent = data.rating
-  content.append(rating)
+  const rating = document.createElement("h5");
+  rating.textContent = data.rating;
+  content.append(rating);
 
-  const reviewContent = document.createElement('p')
-  reviewContent.textContent = data.content
-  content.append(reviewContent)
+  const reviewContent = document.createElement("p");
+  reviewContent.textContent = data.content;
+  content.append(reviewContent);
 
-  reviews.append(content)
+  if (data.user_id === USER_ID) {
+    console.log(`${USER_NAME} created this review`)
+  }
+
+  reviews.append(content);
 }
 
 function handleGifSubmission(e) {
-  e.preventDefault()
-  const title = e.target.elements["title"].value
-  const url = e.target.elements["url"].value
-  const postBody = { title, url }
+  e.preventDefault();
+  const title = e.target.elements["title"].value;
+  const url = e.target.elements["url"].value;
+  const postBody = { title, url };
   fetch(`${API}/gifs`, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json'
+      "Content-Type": "application/json"
     },
     body: JSON.stringify(postBody)
   })
-  .then(res => res.json())
-  .then(data => renderGifThumbnail(data))
+    .then(res => res.json())
+    .then(data => renderGifThumbnail(data));
 }
 
 function handleReviewSubmission(e) {
-  e.preventDefault()
-  const rating = e.target.elements["rating"].value
-  const content = e.target.elements["content"].value
-  const gif_id = e.target.dataset.gifId
-  const user_id = e.target.dataset.userId
-  const postBody = { user_id, rating, content, gif_id }
+  e.preventDefault();
+  const rating = e.target.elements["rating"].value;
+  const content = e.target.elements["content"].value;
+  const gif_id = e.target.dataset.gifId;
+  const user_id = e.target.dataset.userId;
+  const postBody = { user_id, rating, content, gif_id };
   fetch(`${API}/reviews`, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json'
+      "Content-Type": "application/json"
     },
     body: JSON.stringify(postBody)
   })
-  .then(res => res.json())
-  .then(data => {
-    if (data.errors) {
-      console.error(data.errors)
-    } else {
-      data.user_name = USER_NAME
-      renderReview(data)
-    }
-  })
+    .then(res => res.json())
+    .then(data => {
+      if (data.errors) {
+        console.error(data.errors);
+      } else {
+        data.user_name = USER_NAME;
+        renderReview(data);
+      }
+    });
 
-  e.target.reset()
+  e.target.reset();
 }
 
 function compareAvgRatings(a, b) {
   if (a.avg_rating < b.avg_rating) {
-    return 1
+    return 1;
   } else if (a.avg_rating > b.avg_rating) {
-    return -1
+    return -1;
   } else {
-    return 0
+    return 0;
   }
 }
 
 function sortGifs(e) {
-  const gifs = document.getElementById('gif-list')
-  console.log(gifs)
-  gifs.innerHTML = ''
-  if (e.target.id === 'false') {
-    e.target.id = 'true'
+  const gifs = document.getElementById("gif-list");
+  console.log(gifs);
+  gifs.innerHTML = "";
+  if (e.target.id === "false") {
+    e.target.id = "true";
     fetch(`${API}/gifs`)
-    .then(res => res.json())
-    .then(data => data.sort(compareAvgRatings))
-    .then(sorted => sorted.forEach(gif => renderGifThumbnail(gif)))
+      .then(res => res.json())
+      .then(data => data.sort(compareAvgRatings))
+      .then(sorted => sorted.forEach(gif => renderGifThumbnail(gif)));
   } else {
-    e.target.id = 'false'
-    renderGifs()
+    e.target.id = "false";
+    renderGifs();
   }
 }
