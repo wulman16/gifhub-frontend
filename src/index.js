@@ -61,7 +61,7 @@ function renderGifThumbnail(data) {
 
   const avgRating = document.createElement("p");
   avgRating.id = "gif-thumbnail-rating";
-  avgRating.textContent = data.avg_rating;
+  avgRating.textContent = parseFloat(data.avg_rating).toFixed(1)
   if (data.reviews.length > 0) {
     li.append(avgRating);
   }
@@ -87,7 +87,7 @@ function renderDetails(data) {
   detailPanel.append(title);
 
   const avgRating = document.createElement("h3");
-  avgRating.textContent = `Average Rating: ${data.avg_rating}`;
+  avgRating.textContent = `Average Rating: ${parseFloat(data.avg_rating).toFixed(1)}`;
   if (data.reviews.length > 0) {
     detailPanel.append(avgRating);
   }
