@@ -131,10 +131,27 @@ function renderDetails(data) {
   // userField.placeholder = 'User ID'
   // reviewForm.append(userField)
 
-  const ratingField = document.createElement('input')
-  ratingField.type = 'number'
+  // const ratingField = document.createElement('input')
+  // ratingField.type = 'number'
+  // ratingField.name = 'rating'
+  // ratingField.placeholder = 'Rating'
+  // reviewForm.append(ratingField)
+
+  const ratingField = document.createElement('select')
   ratingField.name = 'rating'
-  ratingField.placeholder = 'Rating'
+  const defaultOption = document.createElement('option')
+  defaultOption.value = ''
+  defaultOption.selected = true
+  defaultOption.disabled = true
+  defaultOption.hidden = true
+  defaultOption.textContent = 'Select a Rating'
+  ratingField.append(defaultOption)
+  for (i = 0; i <= 5; i++) {
+    const option = document.createElement('option')
+    option.value = i
+    option.textContent = i
+    ratingField.append(option)
+  }
   reviewForm.append(ratingField)
 
   const contentField = document.createElement('textarea')
@@ -174,7 +191,6 @@ function handleReviewSubmission(e) {
   const gif_id = e.target.dataset.gifId
   const user_id = e.target.dataset.userId
   const postBody = { user_id, rating, content, gif_id }
-  // console.log(postBody)
   fetch(`${API}/reviews`, {
     method: 'POST',
     headers: {
