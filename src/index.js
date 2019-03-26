@@ -3,9 +3,8 @@ const API = `http://localhost:3000/api/v1`
 let USER_NAME, USER_ID;
 
 document.addEventListener('DOMContentLoaded', () => {
-  renderGifs()
-
   userSignIn()
+  .then(renderGifs)
 
   const sortButton = document.getElementById('sort')
   sortButton.id = false
@@ -21,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
 function userSignIn() {
   const name = prompt("Please Sign In:");
   // console.log(USER_NAME)
-  createUser({ name })
+  return createUser({ name })
   .then(json => {
     if (json.errors) {
       userSignIn()
@@ -45,7 +44,8 @@ function createUser(data) {
 
 function renderGifs() {
   document.getElementById('gif-list').innerHTML = ''
-  fetch(`${API}/gifs`)
+
+  return fetch(`${API}/gifs`)
   .then(res => res.json())
   .then(data => data.forEach(renderGifThumbnail))
 }
@@ -74,7 +74,8 @@ function handleThumbnailClick(e) {
   if(e.target.tagName === 'IMG') {
     fetch(`${API}/gifs/${e.target.dataset.id}`)
     .then(res => res.json())
-    .then(data => renderDetails(data))
+    .then(renderDetails)
+    .then(renderReviewForm)
   }
 }
 
@@ -101,36 +102,19 @@ function renderDetails(data) {
   reviews.id = "reviews"
   detailPanel.append(reviews)
 
-  data.reviews.forEach(review => {
-    // const content = document.createElement('div')
+  data.reviews.forEach(renderReview)
 
-    // // TODO: get user name from backend
-    // const author = document.createElement('h4')
-    // author.textContent = review.user_name
-    // content.append(author)
+  // renderReviewForm(data)
+  return data
+}
 
-    // const rating = document.createElement('h5')
-    // rating.textContent = review.rating
-    // content.append(rating)
-
-    // const reviewContent = document.createElement('p')
-    // reviewContent.textContent = review.content
-    // content.append(reviewContent)
-
-    // reviews.append(content)
-    renderReview(review)
-  })
+function renderReviewForm(data) {
+  const detailPanel = document.getElementById('detail-panel')
 
   const reviewForm = document.createElement('form')
   reviewForm.id = 'new-review-form'
   reviewForm.dataset.gifId = data.id
   reviewForm.dataset.userId = USER_ID
-
-  // const userField = document.createElement('input')
-  // userField.type = 'number'
-  // userField.name = 'user-id'
-  // userField.placeholder = 'User ID'
-  // reviewForm.append(userField)
 
   const ratingField = document.createElement('input')
   ratingField.type = 'number'
@@ -214,25 +198,6 @@ function handleReviewSubmission(e) {
 
   e.target.reset()
 }
-
-// function renderNewReview(data) {
-//   const reviews = document.getElementById('reviews')
-//   const content = document.createElement('div')
-
-//   const author = document.createElement('h4')
-//   author.textContent = USER_NAME
-//   content.append(author)
-
-//   const rating = document.createElement('h5')
-//   rating.textContent = data.rating
-//   content.append(rating)
-
-//   const reviewContent = document.createElement('p')
-//   reviewContent.textContent = data.content
-//   content.append(reviewContent)
-
-//   reviews.append(content)
-// }
 
 function compareAvgRatings(a, b) {
   if (a.avg_rating < b.avg_rating) {
