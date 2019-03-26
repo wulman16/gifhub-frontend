@@ -102,22 +102,23 @@ function renderDetails(data) {
   detailPanel.append(reviews)
 
   data.reviews.forEach(review => {
-    const content = document.createElement('div')
+    // const content = document.createElement('div')
 
-    // TODO: get user name from backend
-    const author = document.createElement('h4')
-    author.textContent = review.user_name
-    content.append(author)
+    // // TODO: get user name from backend
+    // const author = document.createElement('h4')
+    // author.textContent = review.user_name
+    // content.append(author)
 
-    const rating = document.createElement('h5')
-    rating.textContent = review.rating
-    content.append(rating)
+    // const rating = document.createElement('h5')
+    // rating.textContent = review.rating
+    // content.append(rating)
 
-    const reviewContent = document.createElement('p')
-    reviewContent.textContent = review.content
-    content.append(reviewContent)
+    // const reviewContent = document.createElement('p')
+    // reviewContent.textContent = review.content
+    // content.append(reviewContent)
 
-    reviews.append(content)
+    // reviews.append(content)
+    renderReview(review)
   })
 
   const reviewForm = document.createElement('form')
@@ -149,6 +150,25 @@ function renderDetails(data) {
   detailPanel.append(reviewForm)
 
   reviewForm.addEventListener('submit', handleReviewSubmission)
+}
+
+function renderReview(data) {
+  const reviews = document.getElementById('reviews')
+  const content = document.createElement('div')
+
+  const author = document.createElement('h4')
+  author.textContent = data.user_name
+  content.append(author)
+
+  const rating = document.createElement('h5')
+  rating.textContent = data.rating
+  content.append(rating)
+
+  const reviewContent = document.createElement('p')
+  reviewContent.textContent = data.content
+  content.append(reviewContent)
+
+  reviews.append(content)
 }
 
 function handleGifSubmission(e) {
@@ -187,31 +207,32 @@ function handleReviewSubmission(e) {
     if (data.errors) {
       console.error(data.errors)
     } else {
-      renderNewReview(data)
+      data.user_name = USER_NAME
+      renderReview(data)
     }
   })
 
   e.target.reset()
 }
 
-function renderNewReview(data) {
-  const reviews = document.getElementById('reviews')
-  const content = document.createElement('div')
+// function renderNewReview(data) {
+//   const reviews = document.getElementById('reviews')
+//   const content = document.createElement('div')
 
-  const author = document.createElement('h4')
-  author.textContent = USER_NAME
-  content.append(author)
+//   const author = document.createElement('h4')
+//   author.textContent = USER_NAME
+//   content.append(author)
 
-  const rating = document.createElement('h5')
-  rating.textContent = data.rating
-  content.append(rating)
+//   const rating = document.createElement('h5')
+//   rating.textContent = data.rating
+//   content.append(rating)
 
-  const reviewContent = document.createElement('p')
-  reviewContent.textContent = data.content
-  content.append(reviewContent)
+//   const reviewContent = document.createElement('p')
+//   reviewContent.textContent = data.content
+//   content.append(reviewContent)
 
-  reviews.append(content)
-}
+//   reviews.append(content)
+// }
 
 function compareAvgRatings(a, b) {
   if (a.avg_rating < b.avg_rating) {
