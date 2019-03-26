@@ -180,6 +180,13 @@ function renderReview(data) {
 
   if (data.user_id === USER_ID) {
     console.log(`${USER_NAME} created this review`)
+    // console.log(data)
+    const deleteButton = document.createElement('button');
+    deleteButton.dataset.id = data.id;
+    deleteButton.textContent = "Delete"
+    deleteButton.addEventListener('click', handleDeleteReview)
+
+    content.append(deleteButton)
   }
 
   reviews.append(content);
@@ -226,6 +233,19 @@ function handleReviewSubmission(e) {
     });
 
   e.target.reset();
+}
+
+function handleDeleteReview(e) {
+  // console.log(e.target)
+  const id = e.target.dataset.id;
+  const review = e.target.parentNode;
+
+  fetch(`${API}/reviews/${id}`, {
+    method: "DELETE"
+  })
+  // .then(console.log)
+
+  review.parentNode.removeChild(review);
 }
 
 function compareAvgRatings(a, b) {
