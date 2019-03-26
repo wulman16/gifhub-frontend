@@ -18,7 +18,20 @@ function renderGifs() {
 function renderGifThumbnail(data) {
   const ul = document.getElementById('gif-list')
   const li = document.createElement('li')
-  li.innerHTML = `<img src="${data.url}" class="gif-thumbnail" data-id="${data.id}">`
+  
+  const img = document.createElement('img')
+  img.src = data.url
+  img.className = 'gif-thumbnail'
+  img.dataset.id = data.id
+  li.append(img)
+
+  const avgRating = document.createElement('p')
+  avgRating.id = 'gif-thumbnail-rating'
+  avgRating.textContent = data.avg_rating
+  if(data.reviews.length > 0) {
+    li.append(avgRating)
+  }
+  
   ul.append(li)
 }
 
@@ -38,6 +51,12 @@ function renderDetails(data) {
   title.textContent = data.title
   detailPanel.append(title)
 
+  const avgRating = document.createElement('h3')
+  avgRating.textContent = `Average Rating: ${data.avg_rating}`
+  if(data.reviews.length > 0) {
+    detailPanel.append(avgRating)
+  }
+
   const gif = document.createElement('img')
   gif.src = data.url
   gif.className = 'gif-detail'
@@ -52,7 +71,7 @@ function renderDetails(data) {
 
     // TODO: get user name from backend
     const author = document.createElement('h4')
-    author.textContent = review.user_id
+    author.textContent = review.user_name
     content.append(author)
 
     const rating = document.createElement('h5')
