@@ -119,12 +119,13 @@ function renderDetails(data) {
   const reviewForm = document.createElement('form')
   reviewForm.id = 'new-review-form'
   reviewForm.dataset.gifId = data.id
+  reviewForm.dataset.userId = USER_ID
 
-  const userField = document.createElement('input')
-  userField.type = 'number'
-  userField.name = 'user-id'
-  userField.placeholder = 'User ID'
-  reviewForm.append(userField)
+  // const userField = document.createElement('input')
+  // userField.type = 'number'
+  // userField.name = 'user-id'
+  // userField.placeholder = 'User ID'
+  // reviewForm.append(userField)
 
   const ratingField = document.createElement('input')
   ratingField.type = 'number'
@@ -164,11 +165,12 @@ function handleGifSubmission(e) {
 
 function handleReviewSubmission(e) {
   e.preventDefault()
-  const user_id = e.target.elements["user-id"].value
   const rating = e.target.elements["rating"].value
   const content = e.target.elements["content"].value
   const gif_id = e.target.dataset.gifId
+  const user_id = e.target.dataset.userId
   const postBody = { user_id, rating, content, gif_id }
+  // console.log(postBody)
   fetch(`${API}/reviews`, {
     method: 'POST',
     headers: {
@@ -185,9 +187,8 @@ function renderNewReview(data) {
   const reviews = document.getElementById('reviews')
   const content = document.createElement('div')
 
-  // TODO: get user name from backend
   const author = document.createElement('h4')
-  author.textContent = data.user_id
+  author.textContent = USER_NAME
   content.append(author)
 
   const rating = document.createElement('h5')
