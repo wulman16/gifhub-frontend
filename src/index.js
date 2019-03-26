@@ -1,15 +1,47 @@
 const API = `http://localhost:3000/api/v1`
 
+let USER_NAME, USER_ID;
+
 document.addEventListener('DOMContentLoaded', () => {
   renderGifs()
+
+  userSignIn()
+
   const sortButton = document.getElementById('sort')
   sortButton.id = false
   sortButton.addEventListener('click', sortGifs)
+
   const list = document.getElementById('gif-list')
   list.addEventListener('click', handleThumbnailClick)
+
   const form = document.getElementById('new-gif-form')
   form.addEventListener('submit', handleGifSubmission)
 })
+
+function userSignIn() {
+  const name = prompt("Please Sign In:");
+  // console.log(USER_NAME)
+  createUser({ name })
+  .then(json => {
+    if (json.errors) {
+      userSignIn()
+    } else {
+      USER_NAME = json.name;
+      USER_ID = json.id;
+    }
+  })
+}
+
+function createUser(data) {
+  return fetch(`${API}/users`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(data)
+  })
+  .then(response => response.json())
+}
 
 function renderGifs() {
   document.getElementById('gif-list').innerHTML = ''
@@ -21,7 +53,7 @@ function renderGifs() {
 function renderGifThumbnail(data) {
   const ul = document.getElementById('gif-list')
   const li = document.createElement('li')
-  
+
   const img = document.createElement('img')
   img.src = data.url
   img.className = 'gif-thumbnail'
@@ -34,7 +66,7 @@ function renderGifThumbnail(data) {
   if(data.reviews.length > 0) {
     li.append(avgRating)
   }
-  
+
   ul.append(li)
 }
 
@@ -91,12 +123,13 @@ function renderDetails(data) {
   const reviewForm = document.createElement('form')
   reviewForm.id = 'new-review-form'
   reviewForm.dataset.gifId = data.id
+  reviewForm.dataset.userId = USER_ID
 
-  const userField = document.createElement('input')
-  userField.type = 'number'
-  userField.name = 'user-id'
-  userField.placeholder = 'User ID'
-  reviewForm.append(userField)
+  // const userField = document.createElement('input')
+  // userField.type = 'number'
+  // userField.name = 'user-id'
+  // userField.placeholder = 'User ID'
+  // reviewForm.append(userField)
 
   const ratingField = document.createElement('input')
   ratingField.type = 'number'
@@ -136,11 +169,12 @@ function handleGifSubmission(e) {
 
 function handleReviewSubmission(e) {
   e.preventDefault()
-  const user_id = e.target.elements["user-id"].value
   const rating = e.target.elements["rating"].value
   const content = e.target.elements["content"].value
   const gif_id = e.target.dataset.gifId
+  const user_id = e.target.dataset.userId
   const postBody = { user_id, rating, content, gif_id }
+  // console.log(postBody)
   fetch(`${API}/reviews`, {
     method: 'POST',
     headers: {
@@ -149,7 +183,14 @@ function handleReviewSubmission(e) {
     body: JSON.stringify(postBody)
   })
   .then(res => res.json())
-  .then(data => renderNewReview(data))
+  .then(data => {
+    if (data.errors) {
+      console.error(data.errors)
+    } else {
+      renderNewReview(data)
+    }
+  })
+
   e.target.reset()
 }
 
@@ -157,9 +198,8 @@ function renderNewReview(data) {
   const reviews = document.getElementById('reviews')
   const content = document.createElement('div')
 
-  // TODO: get user name from backend
   const author = document.createElement('h4')
-  author.textContent = data.user_id
+  author.textContent = USER_NAME
   content.append(author)
 
   const rating = document.createElement('h5')
