@@ -166,20 +166,20 @@ function renderReview(data) {
   const content = document.createElement("div");
   content.className = "review-card"
 
-  const author = document.createElement("h4");
-  author.textContent = data.user_name;
+  const author = document.createElement("p");
+  author.innerHTML = `<strong>${data.user_name.toLowerCase()}</strong> says:`;
   content.append(author);
-
-  const rating = document.createElement("h5");
-  rating.textContent = data.rating;
-  content.append(rating);
 
   const reviewContent = document.createElement("p");
   reviewContent.textContent = data.content;
   content.append(reviewContent);
 
+  const rating = document.createElement("p");
+  rating.innerHTML = `<strong>${data.rating}</strong> stars`;
+  content.append(rating);
+
   if (data.user_id === USER_ID) {
-    console.log(`${USER_NAME} created this review`)
+    // console.log(`${USER_NAME} created this review`)
     // console.log(data)
     const deleteButton = document.createElement('button');
     deleteButton.dataset.id = data.id;
