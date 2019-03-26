@@ -3,9 +3,8 @@ const API = `http://localhost:3000/api/v1`
 let USER_NAME, USER_ID;
 
 document.addEventListener('DOMContentLoaded', () => {
-  renderGifs()
-
   userSignIn()
+  .then(renderGifs)
 
   const sortButton = document.getElementById('sort')
   sortButton.id = false
@@ -21,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
 function userSignIn() {
   const name = prompt("Please Sign In:");
   // console.log(USER_NAME)
-  createUser({ name })
+  return createUser({ name })
   .then(json => {
     if (json.errors) {
       userSignIn()
@@ -45,7 +44,8 @@ function createUser(data) {
 
 function renderGifs() {
   document.getElementById('gif-list').innerHTML = ''
-  fetch(`${API}/gifs`)
+
+  return fetch(`${API}/gifs`)
   .then(res => res.json())
   .then(data => data.forEach(renderGifThumbnail))
 }
@@ -74,7 +74,8 @@ function handleThumbnailClick(e) {
   if(e.target.tagName === 'IMG') {
     fetch(`${API}/gifs/${e.target.dataset.id}`)
     .then(res => res.json())
-    .then(data => renderDetails(data))
+    .then(renderDetails)
+    .then(renderReviewForm)
   }
 }
 
@@ -101,24 +102,14 @@ function renderDetails(data) {
   reviews.id = "reviews"
   detailPanel.append(reviews)
 
-  data.reviews.forEach(review => {
-    const content = document.createElement('div')
+  data.reviews.forEach(renderReview)
 
-    // TODO: get user name from backend
-    const author = document.createElement('h4')
-    author.textContent = review.user_name
-    content.append(author)
+  // renderReviewForm(data)
+  return data
+}
 
-    const rating = document.createElement('h5')
-    rating.textContent = review.rating
-    content.append(rating)
-
-    const reviewContent = document.createElement('p')
-    reviewContent.textContent = review.content
-    content.append(reviewContent)
-
-    reviews.append(content)
-  })
+function renderReviewForm(data) {
+  const detailPanel = document.getElementById('detail-panel')
 
   const reviewForm = document.createElement('form')
   reviewForm.id = 'new-review-form'
@@ -168,6 +159,25 @@ function renderDetails(data) {
   reviewForm.addEventListener('submit', handleReviewSubmission)
 }
 
+function renderReview(data) {
+  const reviews = document.getElementById('reviews')
+  const content = document.createElement('div')
+
+  const author = document.createElement('h4')
+  author.textContent = data.user_name
+  content.append(author)
+
+  const rating = document.createElement('h5')
+  rating.textContent = data.rating
+  content.append(rating)
+
+  const reviewContent = document.createElement('p')
+  reviewContent.textContent = data.content
+  content.append(reviewContent)
+
+  reviews.append(content)
+}
+
 function handleGifSubmission(e) {
   e.preventDefault()
   const title = e.target.elements["title"].value
@@ -203,30 +213,12 @@ function handleReviewSubmission(e) {
     if (data.errors) {
       console.error(data.errors)
     } else {
-      renderNewReview(data)
+      data.user_name = USER_NAME
+      renderReview(data)
     }
   })
 
   e.target.reset()
-}
-
-function renderNewReview(data) {
-  const reviews = document.getElementById('reviews')
-  const content = document.createElement('div')
-
-  const author = document.createElement('h4')
-  author.textContent = USER_NAME
-  content.append(author)
-
-  const rating = document.createElement('h5')
-  rating.textContent = data.rating
-  content.append(rating)
-
-  const reviewContent = document.createElement('p')
-  reviewContent.textContent = data.content
-  content.append(reviewContent)
-
-  reviews.append(content)
 }
 
 function compareAvgRatings(a, b) {
