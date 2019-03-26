@@ -113,7 +113,7 @@ function renderReviewForm() {
   const reviewList = document.getElementById("reviews");
 
   const reviewForm = document.createElement("form");
-  reviewForm.id = "new-review-form";
+  reviewForm.id = "review-form";
   reviewForm.dataset.gifId = GIF_ID;
   reviewForm.dataset.userId = USER_ID;
 
@@ -181,10 +181,17 @@ function renderReview(data) {
     // console.log(data)
     const deleteButton = document.createElement('button');
     deleteButton.dataset.id = data.id;
-    deleteButton.textContent = "Delete"
-    deleteButton.addEventListener('click', handleDeleteReview)
+    deleteButton.textContent = "Delete";
+    deleteButton.addEventListener('click', handleDeleteReview);
 
-    content.append(deleteButton)
+    content.append(deleteButton);
+
+    const editButton = document.createElement('button');
+    editButton.dataset.id = data.id;
+    editButton.textContent = "Edit";
+    editButton.addEventListener('click', handleEditReview)
+
+    content.append(editButton);
   }
 
   reviews.append(content);
@@ -205,13 +212,6 @@ function handleGifSubmission(e) {
     .then(res => res.json())
     .then(data => renderGifThumbnail(data));
 }
-
-// function handleReviewButtonClick(e) {
-//   console.log(e.target)
-//   // const addButton = e.target;
-//   e.target.parentNode.removeChild(e.target);
-//   renderReviewForm()
-// }
 
 function handleReviewSubmission(e) {
   e.preventDefault();
@@ -251,6 +251,18 @@ function handleDeleteReview(e) {
   // .then(console.log)
 
   review.parentNode.removeChild(review);
+}
+
+function handleEditReview(e) {
+  const form = document.getElementById('review-form');
+
+  fetch(`${API}/reviews/${e.target.dataset.id}`)
+    .then(response => response.json())
+    .then(data => {
+      form.elements["rating"].value = data.rating;
+      form.elements["content"].value = data.content;
+      form.dataset.edited = "true";
+    })
 }
 
 function compareAvgRatings(a, b) {
