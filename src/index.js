@@ -156,7 +156,6 @@ function renderAllReviews(data) {
 
   renderReviewForm();
   data.reviews.forEach(renderReview);
-
 }
 
 function renderReview(data) {
@@ -169,11 +168,12 @@ function renderReview(data) {
   content.append(author);
 
   const reviewContent = document.createElement("p");
+  reviewContent.className = "review-content";
   reviewContent.textContent = data.content;
   content.append(reviewContent);
 
   const rating = document.createElement("p");
-  rating.innerHTML = `<strong>${data.rating}</strong> stars`;
+  rating.innerHTML = `<span class="review-rating"><strong>${data.rating}</strong></span> stars`;
   content.append(rating);
 
   if (data.user_id === USER_ID) {
@@ -215,18 +215,47 @@ function handleGifSubmission(e) {
 
 function handleReviewSubmission(e) {
   e.preventDefault();
+
   const rating = e.target.elements["rating"].value;
   const content = e.target.elements["content"].value;
-  const gif_id = e.target.dataset.gifId;
-  const user_id = e.target.dataset.userId;
-  const postBody = { user_id, rating, content, gif_id };
-  fetch(`${API}/reviews`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(postBody)
-  })
+
+  if(e.target.dataset.reviewId) {
+    const id = e.target.dataset.reviewId;
+    delete e.target.dataset.reviewId;
+
+    postBody = { rating, content };
+
+    fetch(`${API}/reviews/${id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json"
+      },
+      body: JSON.stringify(postBody)
+    })
+    .then(response => response.json())
+    .then(data => {
+      const reviewCard = document.getElementById('reviews').querySelector(".edited")
+      const rating = reviewCard.querySelector('.review-rating')
+      const content = reviewCard.querySelector('.review-content')
+
+      rating.textContent = data.rating
+      content.textContent = data.content
+
+      reviewCard.classList.remove("edited")
+    })
+  } else {
+    const gif_id = e.target.dataset.gifId;
+    const user_id = e.target.dataset.userId;
+    const postBody = { user_id, rating, content, gif_id };
+
+    fetch(`${API}/reviews`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(postBody)
+    })
     .then(res => res.json())
     .then(data => {
       if (data.errors) {
@@ -236,6 +265,7 @@ function handleReviewSubmission(e) {
         renderReview(data);
       }
     });
+  }
 
   e.target.reset();
 }
@@ -255,14 +285,17 @@ function handleDeleteReview(e) {
 
 function handleEditReview(e) {
   const form = document.getElementById('review-form');
+  const id = e.target.dataset.id;
 
-  fetch(`${API}/reviews/${e.target.dataset.id}`)
+  fetch(`${API}/reviews/${id}`)
     .then(response => response.json())
     .then(data => {
       form.elements["rating"].value = data.rating;
       form.elements["content"].value = data.content;
-      form.dataset.edited = "true";
+      form.dataset.reviewId = data.id;
     })
+
+  e.target.parentNode.classList += " edited"
 }
 
 function compareAvgRatings(a, b) {
