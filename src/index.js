@@ -74,41 +74,49 @@ function handleThumbnailClick(e) {
     fetch(`${API}/gifs/${e.target.dataset.id}`)
       .then(res => res.json())
       .then(renderDetails)
-      .then(renderReviewForm);
+      .then(renderAllReviews)
+      // .then(renderReviewForm);
   }
 }
 
 function renderDetails(data) {
-  const detailPanel = document.getElementById("detail-panel");
-  detailPanel.innerHTML = "";
+  const gifDetails = document.getElementById("gif-details");
+  gifDetails.innerHTML = "";
 
   const title = document.createElement("h3");
   title.textContent = data.title;
-  detailPanel.append(title);
+  gifDetails.append(title);
 
   const avgRating = document.createElement("h3");
   avgRating.textContent = `Average Rating: ${data.avg_rating}`;
   if (data.reviews.length > 0) {
-    detailPanel.append(avgRating);
+    gifDetails.append(avgRating);
   }
 
   const gif = document.createElement("img");
   gif.src = data.url;
   gif.className = "gif-detail";
-  detailPanel.append(gif);
+  gifDetails.append(gif);
 
-  const reviews = document.createElement("div");
-  reviews.id = "reviews";
-  detailPanel.append(reviews);
+  // const reviews = document.createElement("div");
+  // reviews.id = "reviews";
+  // gifDetails.append(reviews);
 
-  data.reviews.forEach(renderReview);
+  // data.reviews.forEach(renderReview);
 
 
   return data;
 }
 
+function renderAllReviews(data) {
+  const reviews = document.getElementById("review-list");
+  reviews.innerHTML = ''
+
+  data.reviews.forEach(renderReview);
+}
+
 function renderReviewForm(data) {
-  const detailPanel = document.getElementById("detail-panel");
+  const gifDetails = document.getElementById("detail-panel");
 
   const reviewForm = document.createElement("form");
   reviewForm.id = "new-review-form";
@@ -156,13 +164,13 @@ function renderReviewForm(data) {
   submitButton.type = "submit";
   reviewForm.append(submitButton);
 
-  detailPanel.append(reviewForm);
+  gifDetails.append(reviewForm);
 
   reviewForm.addEventListener("submit", handleReviewSubmission);
 }
 
 function renderReview(data) {
-  const reviews = document.getElementById("reviews");
+  const reviews = document.getElementById("review-list");
   const content = document.createElement("div");
   content.className = "review-card"
 
