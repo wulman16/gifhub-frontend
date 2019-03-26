@@ -1,6 +1,6 @@
 const API = `http://localhost:3000/api/v1`;
 
-let USER_NAME, USER_ID;
+let USER_NAME, USER_ID, GIF_ID;
 
 document.addEventListener("DOMContentLoaded", () => {
   userSignIn()
@@ -74,58 +74,48 @@ function handleThumbnailClick(e) {
     fetch(`${API}/gifs/${e.target.dataset.id}`)
       .then(res => res.json())
       .then(renderDetails)
-      .then(renderReviewForm);
+      .then(renderAllReviews)
+      // .then(renderReviewForm);
   }
 }
 
 function renderDetails(data) {
-  const detailPanel = document.getElementById("detail-panel");
-  detailPanel.innerHTML = "";
+  GIF_ID = data.id;
+
+  const gifDetails = document.getElementById("gif-details");
+  gifDetails.innerHTML = "";
 
   const title = document.createElement("h3");
   title.textContent = data.title;
-  detailPanel.append(title);
+  gifDetails.append(title);
 
   const avgRating = document.createElement("h3");
   avgRating.textContent = `Average Rating: ${parseFloat(data.avg_rating).toFixed(1)}`;
   if (data.reviews.length > 0) {
-    detailPanel.append(avgRating);
+    gifDetails.append(avgRating);
   }
 
   const gif = document.createElement("img");
   gif.src = data.url;
   gif.className = "gif-detail";
-  detailPanel.append(gif);
+  gifDetails.append(gif);
 
-  const reviews = document.createElement("div");
-  reviews.id = "reviews";
-  detailPanel.append(reviews);
-
-  data.reviews.forEach(renderReview);
-
+  // const reviewButton = document.createElement('button')
+  // reviewButton.innerText = "Add Review"
+  // reviewButton.addEventListener('click', handleReviewButtonClick)
+  // gifDetails.append(reviewButton)
+  // renderReviewForm();
 
   return data;
 }
 
-function renderReviewForm(data) {
-  const detailPanel = document.getElementById("detail-panel");
+function renderReviewForm() {
+  const reviewList = document.getElementById("reviews");
 
   const reviewForm = document.createElement("form");
-  reviewForm.id = "new-review-form";
-  reviewForm.dataset.gifId = data.id;
+  reviewForm.id = "review-form";
+  reviewForm.dataset.gifId = GIF_ID;
   reviewForm.dataset.userId = USER_ID;
-
-  // const userField = document.createElement('input')
-  // userField.type = 'number'
-  // userField.name = 'user-id'
-  // userField.placeholder = 'User ID'
-  // reviewForm.append(userField)
-
-  // const ratingField = document.createElement('input')
-  // ratingField.type = 'number'
-  // ratingField.name = 'rating'
-  // ratingField.placeholder = 'Rating'
-  // reviewForm.append(ratingField)
 
   const ratingField = document.createElement("select");
   ratingField.name = "rating";
@@ -155,10 +145,17 @@ function renderReviewForm(data) {
   const submitButton = document.createElement("input");
   submitButton.type = "submit";
   reviewForm.append(submitButton);
-
-  detailPanel.append(reviewForm);
-
   reviewForm.addEventListener("submit", handleReviewSubmission);
+
+  reviewList.append(reviewForm);
+}
+
+function renderAllReviews(data) {
+  const reviews = document.getElementById("reviews");
+  reviews.innerHTML = "";
+
+  renderReviewForm();
+  data.reviews.forEach(renderReview);
 }
 
 function renderReview(data) {
@@ -171,11 +168,12 @@ function renderReview(data) {
   content.append(author);
 
   const reviewContent = document.createElement("p");
+  reviewContent.className = "review-content";
   reviewContent.textContent = data.content;
   content.append(reviewContent);
 
   const rating = document.createElement("p");
-  rating.innerHTML = `<strong>${data.rating}</strong> stars`;
+  rating.innerHTML = `<span class="review-rating"><strong>${data.rating}</strong></span> stars`;
   content.append(rating);
 
   if (data.user_id === USER_ID) {
@@ -183,10 +181,17 @@ function renderReview(data) {
     // console.log(data)
     const deleteButton = document.createElement('button');
     deleteButton.dataset.id = data.id;
-    deleteButton.textContent = "Delete"
-    deleteButton.addEventListener('click', handleDeleteReview)
+    deleteButton.textContent = "Delete";
+    deleteButton.addEventListener('click', handleDeleteReview);
 
-    content.append(deleteButton)
+    content.append(deleteButton);
+
+    const editButton = document.createElement('button');
+    editButton.dataset.id = data.id;
+    editButton.textContent = "Edit";
+    editButton.addEventListener('click', handleEditReview)
+
+    content.append(editButton);
   }
 
   reviews.append(content);
@@ -210,18 +215,47 @@ function handleGifSubmission(e) {
 
 function handleReviewSubmission(e) {
   e.preventDefault();
+
   const rating = e.target.elements["rating"].value;
   const content = e.target.elements["content"].value;
-  const gif_id = e.target.dataset.gifId;
-  const user_id = e.target.dataset.userId;
-  const postBody = { user_id, rating, content, gif_id };
-  fetch(`${API}/reviews`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(postBody)
-  })
+
+  if(e.target.dataset.reviewId) {
+    const id = e.target.dataset.reviewId;
+    delete e.target.dataset.reviewId;
+
+    postBody = { rating, content };
+
+    fetch(`${API}/reviews/${id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json"
+      },
+      body: JSON.stringify(postBody)
+    })
+    .then(response => response.json())
+    .then(data => {
+      const reviewCard = document.getElementById('reviews').querySelector(".edited")
+      const rating = reviewCard.querySelector('.review-rating')
+      const content = reviewCard.querySelector('.review-content')
+
+      rating.textContent = data.rating
+      content.textContent = data.content
+
+      reviewCard.classList.remove("edited")
+    })
+  } else {
+    const gif_id = e.target.dataset.gifId;
+    const user_id = e.target.dataset.userId;
+    const postBody = { user_id, rating, content, gif_id };
+
+    fetch(`${API}/reviews`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(postBody)
+    })
     .then(res => res.json())
     .then(data => {
       if (data.errors) {
@@ -231,6 +265,7 @@ function handleReviewSubmission(e) {
         renderReview(data);
       }
     });
+  }
 
   e.target.reset();
 }
@@ -246,6 +281,21 @@ function handleDeleteReview(e) {
   // .then(console.log)
 
   review.parentNode.removeChild(review);
+}
+
+function handleEditReview(e) {
+  const form = document.getElementById('review-form');
+  const id = e.target.dataset.id;
+
+  fetch(`${API}/reviews/${id}`)
+    .then(response => response.json())
+    .then(data => {
+      form.elements["rating"].value = data.rating;
+      form.elements["content"].value = data.content;
+      form.dataset.reviewId = data.id;
+    })
+
+  e.target.parentNode.classList += " edited"
 }
 
 function compareAvgRatings(a, b) {
