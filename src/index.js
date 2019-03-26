@@ -19,8 +19,12 @@ function userSignIn() {
   // console.log(USER_NAME)
   createUser({ name })
   .then(json => {
-    USER_NAME = json.name;
-    USER_ID = json.id;
+    if (json.errors) {
+      userSignIn()
+    } else {
+      USER_NAME = json.name;
+      USER_ID = json.id;
+    }
   })
 }
 
