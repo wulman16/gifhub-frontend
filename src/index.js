@@ -6,9 +6,8 @@ document.addEventListener('DOMContentLoaded', () => {
   userSignIn()
   .then(renderGifs)
 
-  const sortButton = document.getElementById('sort')
-  sortButton.id = false
-  sortButton.addEventListener('click', sortGifs)
+  const sortDropdown = document.getElementById('sort-dropdown')
+  sortDropdown.addEventListener('change', sortGifs)
 
   const list = document.getElementById('gif-list')
   list.addEventListener('click', handleThumbnailClick)
@@ -19,7 +18,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function userSignIn() {
   const name = prompt("Please Sign In:");
-  // console.log(USER_NAME)
   return createUser({ name })
   .then(json => {
     if (json.errors) {
@@ -104,7 +102,6 @@ function renderDetails(data) {
 
   data.reviews.forEach(renderReview)
 
-  // renderReviewForm(data)
   return data
 }
 
@@ -115,18 +112,6 @@ function renderReviewForm(data) {
   reviewForm.id = 'new-review-form'
   reviewForm.dataset.gifId = data.id
   reviewForm.dataset.userId = USER_ID
-
-  // const userField = document.createElement('input')
-  // userField.type = 'number'
-  // userField.name = 'user-id'
-  // userField.placeholder = 'User ID'
-  // reviewForm.append(userField)
-
-  // const ratingField = document.createElement('input')
-  // ratingField.type = 'number'
-  // ratingField.name = 'rating'
-  // ratingField.placeholder = 'Rating'
-  // reviewForm.append(ratingField)
 
   const ratingField = document.createElement('select')
   ratingField.name = 'rating'
@@ -231,18 +216,44 @@ function compareAvgRatings(a, b) {
   }
 }
 
-function sortGifs(e) {
-  const gifs = document.getElementById('gif-list')
-  console.log(gifs)
-  gifs.innerHTML = ''
-  if (e.target.id === 'false') {
-    e.target.id = 'true'
-    fetch(`${API}/gifs`)
-    .then(res => res.json())
-    .then(data => data.sort(compareAvgRatings))
-    .then(sorted => sorted.forEach(gif => renderGifThumbnail(gif)))
+function compareCreatedAt(a, b) {
+  if (a.created_at < b.created_at) {
+    return -1
+  } else if (a.created_at > b.created_at) {
+    return 1
   } else {
-    e.target.id = 'false'
-    renderGifs()
+    return 0
+  }
+}
+
+function sortGifs(e) {
+  const selection = e.target.value
+  const gifs = document.getElementById('gif-list')
+  gifs.innerHTML = ''
+  switch (selection) {
+    case 'best':
+      fetch(`${API}/gifs`)
+      .then(res => res.json())
+      .then(data => data.sort(compareAvgRatings))
+      .then(sorted => sorted.forEach(gif => renderGifThumbnail(gif)))
+      break;
+    case 'worst':
+      fetch(`${API}/gifs`)
+      .then(res => res.json())
+      .then(data => data.sort(compareAvgRatings).reverse())
+      .then(sorted => sorted.forEach(gif => renderGifThumbnail(gif)))
+      break;
+    case 'newest':
+      fetch(`${API}/gifs`)
+      .then(res => res.json())
+      .then(data => data.sort(compareCreatedAt).reverse())
+      .then(sorted => sorted.forEach(gif => renderGifThumbnail(gif)))
+      break;
+    case 'oldest':
+      fetch(`${API}/gifs`)
+      .then(res => res.json())
+      .then(data => data.sort(compareCreatedAt))
+      .then(sorted => sorted.forEach(gif => renderGifThumbnail(gif)))
+      break;
   }
 }
