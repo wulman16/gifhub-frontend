@@ -1,6 +1,6 @@
 const API = `http://localhost:3000/api/v1`;
 
-let USER_NAME, USER_ID;
+let USER_NAME, USER_ID, GIF_ID;
 
 document.addEventListener("DOMContentLoaded", () => {
   userSignIn()
@@ -80,6 +80,8 @@ function handleThumbnailClick(e) {
 }
 
 function renderDetails(data) {
+  GIF_ID = data.id;
+
   const gifDetails = document.getElementById("gif-details");
   gifDetails.innerHTML = "";
 
@@ -98,42 +100,22 @@ function renderDetails(data) {
   gif.className = "gif-detail";
   gifDetails.append(gif);
 
-  // const reviews = document.createElement("div");
-  // reviews.id = "reviews";
-  // gifDetails.append(reviews);
-
-  // data.reviews.forEach(renderReview);
-
+  // const reviewButton = document.createElement('button')
+  // reviewButton.innerText = "Add Review"
+  // reviewButton.addEventListener('click', handleReviewButtonClick)
+  // gifDetails.append(reviewButton)
+  // renderReviewForm();
 
   return data;
 }
 
-function renderAllReviews(data) {
-  const reviews = document.getElementById("review-list");
-  reviews.innerHTML = ''
-
-  data.reviews.forEach(renderReview);
-}
-
-function renderReviewForm(data) {
-  const gifDetails = document.getElementById("detail-panel");
+function renderReviewForm() {
+  const reviewList = document.getElementById("reviews");
 
   const reviewForm = document.createElement("form");
   reviewForm.id = "new-review-form";
-  reviewForm.dataset.gifId = data.id;
+  reviewForm.dataset.gifId = GIF_ID;
   reviewForm.dataset.userId = USER_ID;
-
-  // const userField = document.createElement('input')
-  // userField.type = 'number'
-  // userField.name = 'user-id'
-  // userField.placeholder = 'User ID'
-  // reviewForm.append(userField)
-
-  // const ratingField = document.createElement('input')
-  // ratingField.type = 'number'
-  // ratingField.name = 'rating'
-  // ratingField.placeholder = 'Rating'
-  // reviewForm.append(ratingField)
 
   const ratingField = document.createElement("select");
   ratingField.name = "rating";
@@ -163,14 +145,22 @@ function renderReviewForm(data) {
   const submitButton = document.createElement("input");
   submitButton.type = "submit";
   reviewForm.append(submitButton);
-
-  gifDetails.append(reviewForm);
-
   reviewForm.addEventListener("submit", handleReviewSubmission);
+
+  reviewList.append(reviewForm);
+}
+
+function renderAllReviews(data) {
+  const reviews = document.getElementById("reviews");
+  reviews.innerHTML = "";
+
+  renderReviewForm();
+  data.reviews.forEach(renderReview);
+
 }
 
 function renderReview(data) {
-  const reviews = document.getElementById("review-list");
+  const reviews = document.getElementById("reviews");
   const content = document.createElement("div");
   content.className = "review-card"
 
@@ -215,6 +205,13 @@ function handleGifSubmission(e) {
     .then(res => res.json())
     .then(data => renderGifThumbnail(data));
 }
+
+// function handleReviewButtonClick(e) {
+//   console.log(e.target)
+//   // const addButton = e.target;
+//   e.target.parentNode.removeChild(e.target);
+//   renderReviewForm()
+// }
 
 function handleReviewSubmission(e) {
   e.preventDefault();
