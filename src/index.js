@@ -1,12 +1,39 @@
 const API = `http://localhost:3000/api/v1`
 
+let USER_NAME, USER_ID;
+
 document.addEventListener('DOMContentLoaded', () => {
   renderGifs()
+
+  userSignIn()
+
   const list = document.getElementById('gif-list')
   list.addEventListener('click', handleThumbnailClick)
+
   const form = document.getElementById('new-gif-form')
   form.addEventListener('submit', handleGifSubmission)
 })
+
+function userSignIn() {
+  const name = prompt("Please Sign In:");
+  // console.log(USER_NAME)
+  createUser({ name })
+  .then(json => {
+    USER_NAME = json.name;
+    USER_ID = json.id;
+  })
+}
+
+function createUser(data) {
+  return fetch(`${API}/users`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(data)
+  })
+  .then(response => response.json())
+}
 
 function renderGifs() {
   document.getElementById('gif-list').innerHTML = ''
@@ -18,7 +45,7 @@ function renderGifs() {
 function renderGifThumbnail(data) {
   const ul = document.getElementById('gif-list')
   const li = document.createElement('li')
-  
+
   const img = document.createElement('img')
   img.src = data.url
   img.className = 'gif-thumbnail'
@@ -31,7 +58,7 @@ function renderGifThumbnail(data) {
   if(data.reviews.length > 0) {
     li.append(avgRating)
   }
-  
+
   ul.append(li)
 }
 
