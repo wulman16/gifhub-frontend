@@ -102,6 +102,14 @@ function renderDetails(data) {
   return data;
 }
 
+function initializeReviewForm() {
+  let reviewForm = document.createElement("form");
+  reviewForm.id = "review-form";
+  reviewForm.dataset.gifId = GIF_ID;
+  reviewForm.dataset.userId = USER_ID;
+  return reviewForm
+}
+
 function appendRatingOptions(ratingField) {
   for (i = 0; i <= 5; i++) {
     const option = document.createElement("option");
@@ -113,10 +121,7 @@ function appendRatingOptions(ratingField) {
 }
 
 function createReviewForm() {
-  const reviewForm = document.createElement("form");
-  reviewForm.id = "review-form";
-  reviewForm.dataset.gifId = GIF_ID;
-  reviewForm.dataset.userId = USER_ID;
+  const reviewForm = initializeReviewForm()
 
   let ratingField = document.createElement("select");
   ratingField.name = "rating";
