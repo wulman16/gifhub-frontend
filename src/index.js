@@ -110,6 +110,22 @@ function initializeReviewForm() {
   return reviewForm
 }
 
+function initializeRatingField() {
+  let ratingField = document.createElement("select");
+  ratingField.name = "rating";
+  return ratingField
+}
+
+function appendDefaultOptions(ratingField) {
+  const defaultOption = document.createElement("option");
+  defaultOption.value = "";
+  defaultOption.selected = true;
+  defaultOption.disabled = true;
+  defaultOption.textContent = "Select a Rating";
+  ratingField.append(defaultOption);
+  return ratingField
+}
+
 function appendRatingOptions(ratingField) {
   for (i = 0; i <= 5; i++) {
     const option = document.createElement("option");
@@ -120,33 +136,30 @@ function appendRatingOptions(ratingField) {
   return ratingField
 }
 
-function createReviewForm() {
-  const reviewForm = initializeReviewForm()
-
-  let ratingField = document.createElement("select");
-  ratingField.name = "rating";
-
-  const defaultOption = document.createElement("option");
-  defaultOption.value = "";
-  defaultOption.selected = true;
-  defaultOption.disabled = true;
-  defaultOption.hidden = true;
-  defaultOption.textContent = "Select a Rating";
-  ratingField.append(defaultOption);
-
-  ratingField = appendRatingOptions(ratingField)
-
-  reviewForm.append(ratingField);
-
+function appendContentField(reviewForm) {
   const contentField = document.createElement("textarea");
   contentField.name = "content";
   contentField.placeholder = "Type your review here!";
   reviewForm.append(contentField);
+  return reviewForm
+}
 
-  const submitButton = document.createElement("input");
-  submitButton.type = "submit";
-  reviewForm.append(submitButton);
-  reviewForm.addEventListener("submit", handleReviewSubmission);
+function appendSubmitButton(reviewForm) {
+  const submitButton = document.createElement("input")
+  submitButton.type = "submit"
+  reviewForm.append(submitButton)
+  reviewForm.addEventListener("submit", handleReviewSubmission)
+  return reviewForm
+}
+
+function createReviewForm() {
+  let reviewForm = initializeReviewForm()
+  let ratingField = initializeRatingField()
+  ratingField = appendDefaultOptions(ratingField)
+  ratingField = appendRatingOptions(ratingField)
+  reviewForm.append(ratingField);
+  reviewForm = appendContentField(reviewForm)
+  reviewForm = appendSubmitButton(reviewForm)
 
   return reviewForm
 }
