@@ -74,8 +74,6 @@ function handleThumbnailClick(e) {
     fetch(`${API}/gifs/${e.target.dataset.id}`)
       .then(res => res.json())
       .then(renderDetails)
-      .then(renderAllReviews)
-      // .then(renderReviewForm);
   }
 }
 
@@ -106,7 +104,8 @@ function renderDetails(data) {
   // gifDetails.append(reviewButton)
   // renderReviewForm();
 
-  return data;
+  // return data;
+  renderAllReviews();
 }
 
 function renderReviewForm() {
@@ -150,19 +149,24 @@ function renderReviewForm() {
   reviewList.append(reviewForm);
 }
 
-function renderAllReviews(data) {
+function renderAllReviews() {
   const reviews = document.getElementById("reviews");
   reviews.innerHTML = "";
 
   renderReviewForm();
-  // Sort by most recently updated review
-  const sorted = data.reviews.sort((a,b) => {
-    const dateA = new Date(a.updated_at);
-    const dateB = new Date(b.updated_at);
-    return (dateB - dateA);
-  })
 
-  sorted.forEach(renderReview);
+  fetch(`${API}/gifs/${GIF_ID}`)
+    .then(response => response.json())
+    .then(data => {
+      // Sort by most recently updated review
+      const sorted = data.reviews.sort((a,b) => {
+        const dateA = new Date(a.updated_at);
+        const dateB = new Date(b.updated_at);
+        return (dateB - dateA);
+      })
+
+      sorted.forEach(renderReview);
+    })
 }
 
 function renderReview(data) {
