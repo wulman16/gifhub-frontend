@@ -108,44 +108,72 @@ function renderDetails(data) {
   renderAllReviews();
 }
 
-function renderReviewForm() {
-  const reviewList = document.getElementById("reviews");
+//////// REVIEW FORM FUNCTIONS ////////
 
-  const reviewForm = document.createElement("form");
+function initializeReviewForm() {
+  let reviewForm = document.createElement("form");
   reviewForm.id = "review-form";
   reviewForm.dataset.gifId = GIF_ID;
   reviewForm.dataset.userId = USER_ID;
+  return reviewForm
+}
 
-  const ratingField = document.createElement("select");
+function initializeRatingField() {
+  let ratingField = document.createElement("select");
   ratingField.name = "rating";
+  return ratingField
+}
 
+function appendDefaultOption(ratingField) {
   const defaultOption = document.createElement("option");
   defaultOption.value = "";
   defaultOption.selected = true;
   defaultOption.disabled = true;
-  defaultOption.hidden = true;
   defaultOption.textContent = "Select a Rating";
   ratingField.append(defaultOption);
+}
 
+function appendRatingOptions(ratingField) {
   for (i = 0; i <= 5; i++) {
     const option = document.createElement("option");
     option.value = i;
     option.textContent = i;
     ratingField.append(option);
   }
+}
 
-  reviewForm.append(ratingField);
+function appendOptions(ratingField) {
+  appendDefaultOption(ratingField)
+  appendRatingOptions(ratingField)
+}
 
+function appendContentField(reviewForm) {
   const contentField = document.createElement("textarea");
   contentField.name = "content";
   contentField.placeholder = "Type your review here!";
   reviewForm.append(contentField);
+}
 
-  const submitButton = document.createElement("input");
-  submitButton.type = "submit";
-  reviewForm.append(submitButton);
-  reviewForm.addEventListener("submit", handleReviewSubmission);
+function appendSubmitButton(reviewForm) {
+  const submitButton = document.createElement("input")
+  submitButton.type = "submit"
+  reviewForm.append(submitButton)
+  reviewForm.addEventListener("submit", handleReviewSubmission)
+}
 
+function createReviewForm() {
+  let reviewForm = initializeReviewForm()
+  let ratingField = initializeRatingField()
+  appendOptions(ratingField)
+  reviewForm.append(ratingField)
+  appendContentField(reviewForm)
+  appendSubmitButton(reviewForm)
+  return reviewForm
+}
+
+function renderReviewForm() {
+  const reviewList = document.getElementById("reviews");
+  const reviewForm = createReviewForm()
   reviewList.append(reviewForm);
 }
 
@@ -193,8 +221,6 @@ function renderReview(data) {
   content.append(date);
 
   if (data.user_id === USER_ID) {
-    // console.log(`${USER_NAME} created this review`)
-    // console.log(data)
     const deleteButton = document.createElement('button');
     deleteButton.dataset.id = data.id;
     deleteButton.textContent = "Delete";
@@ -288,14 +314,12 @@ function handleReviewSubmission(e) {
 }
 
 function handleDeleteReview(e) {
-  // console.log(e.target)
   const id = e.target.dataset.id;
   const review = e.target.parentNode;
 
   fetch(`${API}/reviews/${id}`, {
     method: "DELETE"
   })
-  // .then(console.log)
 
   review.parentNode.removeChild(review);
 }
@@ -315,24 +339,23 @@ function handleEditReview(e) {
   e.target.parentNode.classList += " edited"
 }
 
-function compareAvgRatings(a, b) {
-  if (a.avg_rating < b.avg_rating) {
-    return 1;
-  } else if (a.avg_rating > b.avg_rating) {
-    return -1;
-  } else {
-    return 0;
+function propertyComparator(prop, order) {
+  if (order === 'ascending') {
+    return function(a, b) {
+      return a[prop] > b[prop] ? 1 : a[prop] < b[prop] ? -1 : 0
+    }
+  } else if (order === 'descending') {
+    return function(a, b) {
+      return a[prop] > b[prop] ? -1 : a[prop] < b[prop] ? 1 : 0
+    }
   }
 }
 
-function compareCreatedAt(a, b) {
-  if (a.created_at < b.created_at) {
-    return -1
-  } else if (a.created_at > b.created_at) {
-    return 1
-  } else {
-    return 0
-  }
+function fetchSortedGifs(sortFunction) {
+  fetch(`${API}/gifs`)
+    .then(res => res.json())
+    .then(data => data.sort(sortFunction))
+    .then(sorted => sorted.forEach(gif => renderGifThumbnail(gif)))
 }
 
 function sortGifs(e) {
@@ -341,28 +364,16 @@ function sortGifs(e) {
   gifs.innerHTML = ''
   switch (selection) {
     case 'best':
-      fetch(`${API}/gifs`)
-      .then(res => res.json())
-      .then(data => data.sort(compareAvgRatings))
-      .then(sorted => sorted.forEach(gif => renderGifThumbnail(gif)))
+      fetchSortedGifs(propertyComparator('avg_rating', 'descending'))
       break;
     case 'worst':
-      fetch(`${API}/gifs`)
-      .then(res => res.json())
-      .then(data => data.sort(compareAvgRatings).reverse())
-      .then(sorted => sorted.forEach(gif => renderGifThumbnail(gif)))
+      fetchSortedGifs(propertyComparator('avg_rating', 'ascending'))
       break;
     case 'newest':
-      fetch(`${API}/gifs`)
-      .then(res => res.json())
-      .then(data => data.sort(compareCreatedAt).reverse())
-      .then(sorted => sorted.forEach(gif => renderGifThumbnail(gif)))
+      fetchSortedGifs(propertyComparator('created_at', 'descending'))
       break;
     case 'oldest':
-      fetch(`${API}/gifs`)
-      .then(res => res.json())
-      .then(data => data.sort(compareCreatedAt))
-      .then(sorted => sorted.forEach(gif => renderGifThumbnail(gif)))
+      fetchSortedGifs(propertyComparator('created_at', 'ascending'))
       break;
   }
 }
