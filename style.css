@@ -1,3 +1,11 @@
+* {
+  font-family: 'Work Sans', sans-serif;
+}
+
+.avg-rating, #site-name {
+  font-weight: 700;
+}
+
 div {
   border: 1px solid black;
 }
@@ -39,4 +47,16 @@ li {
   vertical-align: top;
   margin: 10px;
   border: 10px solid black;
+}
+
+.to-show {
+  display: none;
+}
+
+#site-name {
+  text-align: center;
+}
+
+#new-gif-form-message {
+  display: inline-block;
 }
