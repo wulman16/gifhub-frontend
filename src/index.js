@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
 function userSignIn() {
   const name = prompt("Please Sign In:");
 
-  return createUser({ name })
+  return Adapter.create('users', { name })
   .then(json => {
     if (json.errors) {
       userSignIn();
@@ -30,22 +30,21 @@ function userSignIn() {
   });
 }
 
-function createUser(data) {
-  return fetch(`${API}/users`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(data)
-  })
-  .then(response => response.json());
-}
+// function createUser(data) {
+//   return fetch(`${API}/users`, {
+//     method: "POST",
+//     headers: {
+//       "Content-Type": "application/json"
+//     },
+//     body: JSON.stringify(data)
+//   })
+//   .then(response => response.json());
+// }
 
 function renderGifs() {
   document.getElementById("gif-list").innerHTML = "";
 
-  return fetch(`${API}/gifs`)
-    .then(res => res.json())
+  return Adapter.get('gifs')
     .then(data => data.forEach(renderGifThumbnail));
 }
 
