@@ -80,6 +80,14 @@ function handleThumbnailClick(e) {
 function renderDetails(data) {
   GIF_ID = data.id;
 
+  const detailDialog = document.getElementById('detail-dialog')
+
+  if (typeof detailDialog.showModal === "function") {
+    detailDialog.showModal()
+  } else {
+    alert("The dialog API is not supported by this browser")
+  }
+
   const gifDetails = document.getElementById("gif-details");
   gifDetails.innerHTML = "";
 
