@@ -292,9 +292,7 @@ function handleDeleteReview(e) {
   const id = e.target.dataset.id;
   const review = e.target.parentNode;
 
-  fetch(`${API}/reviews/${id}`, {
-    method: "DELETE"
-  })
+  Adapter.delete('reviews', id)
 
   review.parentNode.removeChild(review);
 }
@@ -303,8 +301,7 @@ function handleEditReview(e) {
   const form = document.getElementById('review-form');
   const id = e.target.dataset.id;
 
-  fetch(`${API}/reviews/${id}`)
-    .then(response => response.json())
+  Adapter.get('reviews', id)
     .then(data => {
       form.elements["rating"].value = data.rating;
       form.elements["content"].value = data.content;
@@ -327,8 +324,7 @@ function propertyComparator(prop, order) {
 }
 
 function fetchSortedGifs(sortFunction) {
-  fetch(`${API}/gifs`)
-    .then(res => res.json())
+  Adapter.get('gifs')
     .then(data => data.sort(sortFunction))
     .then(sorted => sorted.forEach(gif => renderGifThumbnail(gif)))
 }
