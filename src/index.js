@@ -35,6 +35,7 @@ function userSignIn(e) {
       USER_NAME = json.name;
       USER_ID = json.id;
       // document.getElementById("sign-in-div").innerHTML = `Welcome, ${json.name}`
+      document.querySelectorAll('.to-show').forEach(div => div.style.display="block")
       renderGifs()
     }
   });

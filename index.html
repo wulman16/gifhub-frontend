@@ -8,6 +8,7 @@
   <title>GIF Reviewer</title>
 </head>
 <body>
+  <h1>Gif Reviewer</h1>
   <dialog id="sign-in-dialog">
     <form method="dialog" id="sign-in">
       <label>Please enter your name: </label>
@@ -15,14 +16,7 @@
       <input type="submit">
     </form>
   </dialog>
-  <!-- <div id="sign-in-div">
-    <form id="sign-in">
-      <label>Please enter your name: </label>
-      <input type="text" name="name">
-      <input type="submit">
-    </form>
-  </div> -->
-  <div id="form-panel">
+  <div id="form-panel" class="to-show">
     <form id="new-gif-form">
       <h4>Add a New GIF</h4>
       <label>Title</label>
@@ -32,7 +26,7 @@
       <input type="submit">
     </form>
   </div>
-  <div id="thumbnail-panel">
+  <div id="thumbnail-panel" class="to-show">
     <select name="sort" id="sort-dropdown">
         <option value="" selected disabled>Sort GIFs</option>
         <option value="best">Highest Rated</option>
