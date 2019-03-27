@@ -102,15 +102,23 @@ function renderDetails(data) {
   return data;
 }
 
-function renderReviewForm() {
-  const reviewList = document.getElementById("reviews");
+function appendRatingOptions(ratingField) {
+  for (i = 0; i <= 5; i++) {
+    const option = document.createElement("option");
+    option.value = i;
+    option.textContent = i;
+    ratingField.append(option);
+  }
+  return ratingField
+}
 
+function createReviewForm() {
   const reviewForm = document.createElement("form");
   reviewForm.id = "review-form";
   reviewForm.dataset.gifId = GIF_ID;
   reviewForm.dataset.userId = USER_ID;
 
-  const ratingField = document.createElement("select");
+  let ratingField = document.createElement("select");
   ratingField.name = "rating";
 
   const defaultOption = document.createElement("option");
@@ -121,12 +129,7 @@ function renderReviewForm() {
   defaultOption.textContent = "Select a Rating";
   ratingField.append(defaultOption);
 
-  for (i = 0; i <= 5; i++) {
-    const option = document.createElement("option");
-    option.value = i;
-    option.textContent = i;
-    ratingField.append(option);
-  }
+  ratingField = appendRatingOptions(ratingField)
 
   reviewForm.append(ratingField);
 
@@ -140,6 +143,12 @@ function renderReviewForm() {
   reviewForm.append(submitButton);
   reviewForm.addEventListener("submit", handleReviewSubmission);
 
+  return reviewForm
+}
+
+function renderReviewForm() {
+  const reviewList = document.getElementById("reviews");
+  const reviewForm = createReviewForm()
   reviewList.append(reviewForm);
 }
 
