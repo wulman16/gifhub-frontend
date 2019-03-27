@@ -70,6 +70,7 @@ function renderGifThumbnail(data) {
   li.append(img);
 
   const avgRating = document.createElement("p");
+  avgRating.className = 'avg-rating'
   avgRating.id = "gif-thumbnail-rating";
   avgRating.textContent = parseFloat(data.avg_rating).toFixed(1)
   li.append(avgRating);
