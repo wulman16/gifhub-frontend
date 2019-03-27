@@ -1,5 +1,3 @@
-const API = `http://localhost:3000/api/v1`;
-
 let USER_NAME, USER_ID, GIF_ID;
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -33,17 +31,6 @@ function userSignIn(e) {
     }
   });
 }
-
-// function createUser(data) {
-//   return fetch(`${API}/users`, {
-//     method: "POST",
-//     headers: {
-//       "Content-Type": "application/json"
-//     },
-//     body: JSON.stringify(data)
-//   })
-//   .then(response => response.json());
-// }
 
 function renderGifs() {
   document.getElementById("gif-list").innerHTML = "";

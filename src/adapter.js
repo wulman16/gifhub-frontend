@@ -1,4 +1,4 @@
-// const API = `http://localhost:3000/api/v1`;
+const API = `http://localhost:3000/api/v1`;
 
 class Adapter {
   static get(endpoint, id=null) {
