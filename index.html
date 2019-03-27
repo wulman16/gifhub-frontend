@@ -15,32 +15,33 @@
       <input type="submit">
     </form>
   </div>
-  <div class="container">
-    <div id="thumbnail-panel">
-      <select name="sort" id="sort-dropdown">
-          <option value="" selected disabled>Sort GIFs</option>
-          <option value="best">Highest Rated</option>
-          <option value="worst">Lowest Rated</option>
-          <option value="newest">Newest</option>
-          <option value="oldest">Oldest</option>
-      </select>
-      <ul id="gif-list"></ul>
-    </div>
-    <div id="detail-panel">
-      <div id="gif-details"></div>
-      <div id="reviews"></div>
-    </div>
-    <div id="form-panel">
-      <h3>Add a New GIF</h3>
-      <form id="new-gif-form">
-        <label>Title</label>
-        <input type="text" name="title"> <br>
-        <label>URL</label>
-        <input type="text" name="url"> <br>
-        <input type="submit">
-      </form>
-    </div>
+  <div id="form-panel">
+    <form id="new-gif-form">
+      <h4>Add a New GIF</h4>
+      <label>Title</label>
+      <input type="text" name="title">
+      <label>URL</label>
+      <input type="text" name="url">
+      <input type="submit">
+    </form>
   </div>
+  <div id="thumbnail-panel">
+    <select name="sort" id="sort-dropdown">
+        <option value="" selected disabled>Sort GIFs</option>
+        <option value="best">Highest Rated</option>
+        <option value="worst">Lowest Rated</option>
+        <option value="newest">Newest</option>
+        <option value="oldest">Oldest</option>
+    </select>
+    <ul id="gif-list"></ul>
+  </div>
+  <dialog id="detail-dialog">
+    <div id="gif-details"></div>
+    <div id="reviews"></div>
+    <form method="dialog">
+      <button value="cancel">Exit</button>
+    </form>
+  </dialog>
 </body>
 <script src="src/adapter.js"></script>
 <script src="src/gif.js"></script>
