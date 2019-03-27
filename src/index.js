@@ -299,11 +299,6 @@ function propertyComparator(prop, order) {
   }
 }
 
-const sortByBestAvgRatings = propertyComparator('avg_rating', 'descending')
-const sortByWorstAvgRatings = propertyComparator('avg_rating', 'ascending')
-const sortByNewestCreatedAt = propertyComparator('created_at', 'descending')
-const sortByOldestCreatedAt = propertyComparator('created_at', 'ascending')
-
 function fetchSortedGifs(sortFunction) {
   fetch(`${API}/gifs`)
     .then(res => res.json())
@@ -317,16 +312,16 @@ function sortGifs(e) {
   gifs.innerHTML = ''
   switch (selection) {
     case 'best':
-      fetchSortedGifs(sortByBestAvgRatings)
+      fetchSortedGifs(propertyComparator('avg_rating', 'descending'))
       break;
     case 'worst':
-      fetchSortedGifs(sortByWorstAvgRatings)
+      fetchSortedGifs(propertyComparator('avg_rating', 'ascending'))
       break;
     case 'newest':
-      fetchSortedGifs(sortByNewestCreatedAt)
+      fetchSortedGifs(propertyComparator('created_at', 'descending'))
       break;
     case 'oldest':
-      fetchSortedGifs(sortByOldestCreatedAt)
+      fetchSortedGifs(propertyComparator('created_at', 'ascending'))
       break;
   }
 }
