@@ -112,51 +112,6 @@ function renderDetails(data) {
   Review.renderAll();
 }
 
-//////// REVIEW FORM FUNCTIONS ////////
-
-// function initializeRatingField() {
-//   let ratingField = document.createElement("select");
-//   ratingField.name = "rating";
-//   return ratingField
-// }
-
-// function appendDefaultOption(ratingField) {
-//   const defaultOption = document.createElement("option");
-//   defaultOption.value = "";
-//   defaultOption.selected = true;
-//   defaultOption.disabled = true;
-//   defaultOption.textContent = "Select a Rating";
-//   ratingField.append(defaultOption);
-// }
-
-// function appendRatingOptions(ratingField) {
-//   for (i = 0; i <= 5; i++) {
-//     const option = document.createElement("option");
-//     option.value = i;
-//     option.textContent = i;
-//     ratingField.append(option);
-//   }
-// }
-
-// function appendOptions(ratingField) {
-//   appendDefaultOption(ratingField)
-//   appendRatingOptions(ratingField)
-// }
-
-function appendContentField(reviewForm) {
-  const contentField = document.createElement("textarea");
-  contentField.name = "content";
-  contentField.placeholder = "Type your review here!";
-  reviewForm.append(contentField);
-}
-
-function appendSubmitButton(reviewForm) {
-  const submitButton = document.createElement("input")
-  submitButton.type = "submit"
-  reviewForm.append(submitButton)
-  reviewForm.addEventListener("submit", handleReviewSubmission)
-}
-
 function handleReviewSubmission(e) {
   e.preventDefault();
 

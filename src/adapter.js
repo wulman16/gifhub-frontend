@@ -1,4 +1,5 @@
 const API = `http://localhost:3000/api/v1`;
+const REVIEWS_ENDPOINT = "reviews"
 
 class Adapter {
   static get(endpoint, id=null) {

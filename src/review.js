@@ -2,8 +2,6 @@
  * @module Review
  */
 
-const REVIEWS_ENDPOINT = "reviews"
-
 class Review {
   static renderAll() {
     const reviews = document.getElementById("reviews");
@@ -11,7 +9,7 @@ class Review {
 
     Review.renderForm();
 
-    Adapter.get("gifs", GIF_ID)
+    Adapter.get(GIFS_ENDPOINT, GIF_ID)
       .then(data => {
         // Sort by most recently updated review
         const sorted = data.reviews.sort((a,b) => {
@@ -77,10 +75,10 @@ class ReviewForm {
   static render() {
     const reviewForm = ReviewForm.initialize()
     const ratingField = RatingField.initialize()
-    // RatingField.appendOptions(ratingField)
+
     reviewForm.append(ratingField)
-    appendContentField(reviewForm)
-    appendSubmitButton(reviewForm)
+    ReviewForm.appendContentField(reviewForm)
+    ReviewForm.appendSubmitButton(reviewForm)
     return reviewForm
   }
 
@@ -91,6 +89,20 @@ class ReviewForm {
     reviewForm.dataset.userId = USER_ID;
 
     return reviewForm
+  }
+
+  static appendContentField(reviewForm) {
+    const contentField = document.createElement("textarea");
+    contentField.name = "content";
+    contentField.placeholder = "Type your review here!";
+    reviewForm.append(contentField);
+  }
+
+  static appendSubmitButton(reviewForm) {
+    const submitButton = document.createElement("input")
+    submitButton.type = "submit"
+    reviewForm.append(submitButton)
+    reviewForm.addEventListener("submit", handleReviewSubmission)
   }
 }
 
