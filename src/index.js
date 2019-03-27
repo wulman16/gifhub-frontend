@@ -150,12 +150,24 @@ function appendDefaultOption(ratingField) {
 }
 
 function appendRatingOptions(ratingField) {
-  for (i = 0; i <= 5; i++) {
+  for (let i = 5; i >= 0; i--) {
     const option = document.createElement("option");
     option.value = i;
-    option.textContent = i;
+    option.textContent = ratingToStars(i);
     ratingField.append(option);
   }
+}
+
+function ratingToStars(rating) {
+  let stars = ''
+  for(let i = rating; i > 0; i--) {
+    stars += '\u2605'
+  }
+  let nonStars = 5 - rating
+  for(let i = nonStars; i > 0; i--) {
+    stars += '\u2606'
+  }
+  return stars
 }
 
 function appendOptions(ratingField) {
@@ -221,14 +233,14 @@ function renderReview(data) {
   author.innerHTML = `<strong>${data.user_name.toLowerCase()}</strong> says:`;
   content.append(author);
 
+  const rating = document.createElement("p");
+  rating.innerHTML = ratingToStars(data.rating)
+  content.append(rating);
+
   const reviewContent = document.createElement("p");
   reviewContent.className = "review-content";
   reviewContent.textContent = data.content;
   content.append(reviewContent);
-
-  const rating = document.createElement("p");
-  rating.innerHTML = `<span class="review-rating"><strong>${data.rating}</strong></span> stars`;
-  content.append(rating);
 
   const dateFromJSON = new Date(data.updated_at);
   const date = document.createElement("p")
