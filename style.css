@@ -4,13 +4,14 @@ div {
 
 .container {
   display: grid;
-  grid-template-columns: 2fr 6fr;
+  grid-template-columns: 6fr 2fr;
   height: 100%;
 }
 
 .gif-thumbnail {
-  width: 60px;
-  height: 60px;
+  width: 200px;
+  height: 200px;
+  margin: 10px;
 }
 
 #gif-list {
@@ -26,4 +27,16 @@ div {
 .gif-detail {
   width: 150px;
   height: 150px;
+}
+
+ul {
+  margin: 0 auto;
+  text-align: center;
+}
+
+li {
+  display: inline-block;
+  vertical-align: top;
+  margin: 10px;
+  border: 10px solid black;
 }
