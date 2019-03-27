@@ -287,14 +287,29 @@ function handleEditReview(e) {
   e.target.parentNode.classList += " edited"
 }
 
-function propertyComparator(property) {
-  return function(a, b) {
-    return a[property] - b[property]
+function propertyComparator(prop, order) {
+  if (order === 'ascending') {
+    return function(a, b) {
+      return a[prop] > b[prop] ? 1 : a[prop] < b[prop] ? -1 : 0
+    }
+  } else if (order === 'descending') {
+    return function(a, b) {
+      return a[prop] > b[prop] ? -1 : a[prop] < b[prop] ? 1 : 0
+    }
   }
 }
 
-const compareAvgRatings = propertyComparator('avg_rating')
-const compareCreatedAt = propertyComparator('created_at')
+const sortByBestAvgRatings = propertyComparator('avg_rating', 'descending')
+const sortByWorstAvgRatings = propertyComparator('avg_rating', 'ascending')
+const sortByNewestCreatedAt = propertyComparator('created_at', 'descending')
+const sortByOldestCreatedAt = propertyComparator('created_at', 'ascending')
+
+function fetchSortedGifs(sortFunction) {
+  fetch(`${API}/gifs`)
+    .then(res => res.json())
+    .then(data => data.sort(sortFunction))
+    .then(sorted => sorted.forEach(gif => renderGifThumbnail(gif)))
+}
 
 function sortGifs(e) {
   const selection = e.target.value
@@ -302,28 +317,16 @@ function sortGifs(e) {
   gifs.innerHTML = ''
   switch (selection) {
     case 'best':
-      fetch(`${API}/gifs`)
-      .then(res => res.json())
-      .then(data => data.sort(compareAvgRatings).reverse())
-      .then(sorted => sorted.forEach(gif => renderGifThumbnail(gif)))
+      fetchSortedGifs(sortByBestAvgRatings)
       break;
     case 'worst':
-      fetch(`${API}/gifs`)
-      .then(res => res.json())
-      .then(data => data.sort(compareAvgRatings))
-      .then(sorted => sorted.forEach(gif => renderGifThumbnail(gif)))
+      fetchSortedGifs(sortByWorstAvgRatings)
       break;
     case 'newest':
-      fetch(`${API}/gifs`)
-      .then(res => res.json())
-      .then(data => data.sort(compareCreatedAt).reverse())
-      .then(sorted => sorted.forEach(gif => renderGifThumbnail(gif)))
+      fetchSortedGifs(sortByNewestCreatedAt)
       break;
     case 'oldest':
-      fetch(`${API}/gifs`)
-      .then(res => res.json())
-      .then(data => data.sort(compareCreatedAt))
-      .then(sorted => sorted.forEach(gif => renderGifThumbnail(gif)))
+      fetchSortedGifs(sortByOldestCreatedAt)
       break;
   }
 }
