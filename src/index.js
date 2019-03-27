@@ -155,8 +155,14 @@ function renderAllReviews(data) {
   reviews.innerHTML = "";
 
   renderReviewForm();
-  // const sorted =
-  data.reviews.forEach(renderReview);
+  // Sort by most recently updated review
+  const sorted = data.reviews.sort((a,b) => {
+    const dateA = new Date(a.updated_at);
+    const dateB = new Date(b.updated_at);
+    return (dateB - dateA);
+  })
+
+  sorted.forEach(renderReview);
 }
 
 function renderReview(data) {
