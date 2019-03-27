@@ -75,9 +75,9 @@ class Review {
 
 class ReviewForm {
   static render() {
-    let reviewForm = ReviewForm.initialize()
-    let ratingField = initializeRatingField()
-    appendOptions(ratingField)
+    const reviewForm = ReviewForm.initialize()
+    const ratingField = RatingField.initialize()
+    // RatingField.appendOptions(ratingField)
     reviewForm.append(ratingField)
     appendContentField(reviewForm)
     appendSubmitButton(reviewForm)
@@ -85,10 +85,44 @@ class ReviewForm {
   }
 
   static initialize() {
-    let reviewForm = document.createElement("form");
+    const reviewForm = document.createElement("form");
     reviewForm.id = "review-form";
     reviewForm.dataset.gifId = GIF_ID;
     reviewForm.dataset.userId = USER_ID;
+
     return reviewForm
+  }
+}
+
+class RatingField {
+  static initialize() {
+    let ratingField = document.createElement("select");
+    ratingField.name = "rating";
+    RatingField.appendOptions(ratingField)
+
+    return ratingField
+  }
+
+  static appendOptions(ratingField) {
+    RatingField.appendDefaultOption(ratingField)
+    RatingField.appendRatingOptions(ratingField)
+  }
+
+  static appendDefaultOption(ratingField) {
+    const defaultOption = document.createElement("option");
+    defaultOption.value = "";
+    defaultOption.selected = true;
+    defaultOption.disabled = true;
+    defaultOption.textContent = "Select a Rating";
+    ratingField.append(defaultOption);
+  }
+
+  static appendRatingOptions(ratingField) {
+    for (let i = 0; i <= 5; i++) {
+      const option = document.createElement("option");
+      option.value = i;
+      option.textContent = i;
+      ratingField.append(option);
+    }
   }
 }

@@ -114,42 +114,34 @@ function renderDetails(data) {
 
 //////// REVIEW FORM FUNCTIONS ////////
 
-// function initializeReviewForm() {
-//   let reviewForm = document.createElement("form");
-//   reviewForm.id = "review-form";
-//   reviewForm.dataset.gifId = GIF_ID;
-//   reviewForm.dataset.userId = USER_ID;
-//   return reviewForm
+// function initializeRatingField() {
+//   let ratingField = document.createElement("select");
+//   ratingField.name = "rating";
+//   return ratingField
 // }
 
-function initializeRatingField() {
-  let ratingField = document.createElement("select");
-  ratingField.name = "rating";
-  return ratingField
-}
+// function appendDefaultOption(ratingField) {
+//   const defaultOption = document.createElement("option");
+//   defaultOption.value = "";
+//   defaultOption.selected = true;
+//   defaultOption.disabled = true;
+//   defaultOption.textContent = "Select a Rating";
+//   ratingField.append(defaultOption);
+// }
 
-function appendDefaultOption(ratingField) {
-  const defaultOption = document.createElement("option");
-  defaultOption.value = "";
-  defaultOption.selected = true;
-  defaultOption.disabled = true;
-  defaultOption.textContent = "Select a Rating";
-  ratingField.append(defaultOption);
-}
+// function appendRatingOptions(ratingField) {
+//   for (i = 0; i <= 5; i++) {
+//     const option = document.createElement("option");
+//     option.value = i;
+//     option.textContent = i;
+//     ratingField.append(option);
+//   }
+// }
 
-function appendRatingOptions(ratingField) {
-  for (i = 0; i <= 5; i++) {
-    const option = document.createElement("option");
-    option.value = i;
-    option.textContent = i;
-    ratingField.append(option);
-  }
-}
-
-function appendOptions(ratingField) {
-  appendDefaultOption(ratingField)
-  appendRatingOptions(ratingField)
-}
+// function appendOptions(ratingField) {
+//   appendDefaultOption(ratingField)
+//   appendRatingOptions(ratingField)
+// }
 
 function appendContentField(reviewForm) {
   const contentField = document.createElement("textarea");
