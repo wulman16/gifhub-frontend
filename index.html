@@ -4,28 +4,29 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link href="https://fonts.googleapis.com/css?family=Work+Sans:400,700" rel="stylesheet">
   <link href="style.css" rel="stylesheet">
   <title>GIF Reviewer</title>
 </head>
 <body>
-  <div id="sign-in-div">
-    <form id="sign-in">
+  <h1 id="site-name">GIF REVIEWER</h1>
+  <div id="greeting" class="to-show"></div>
+  <dialog id="sign-in-dialog">
+    <form method="dialog" id="sign-in">
       <label>Please enter your name: </label>
-      <input type="text" name="name">
+      <input type="text" name="name" autofocus>
       <input type="submit">
     </form>
-  </div>
-  <div id="form-panel">
+  </dialog>
+  <div id="form-panel" class="to-show">
     <form id="new-gif-form">
-      <h4>Add a New GIF</h4>
-      <label>Title</label>
-      <input type="text" name="title">
-      <label>URL</label>
-      <input type="text" name="url">
+      <h4 id="new-gif-form-message">Add a New GIF </h4>
+      <input type="text" name="title" placeholder="Title">
+      <input type="text" name="url" placeholder="URL">
       <input type="submit">
     </form>
   </div>
-  <div id="thumbnail-panel">
+  <div id="thumbnail-panel" class="to-show">
     <select name="sort" id="sort-dropdown">
         <option value="" selected disabled>Sort GIFs</option>
         <option value="best">Highest Rated</option>

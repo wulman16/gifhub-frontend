@@ -1,6 +1,12 @@
 let USER_NAME, USER_ID, GIF_ID;
 
 document.addEventListener("DOMContentLoaded", () => {
+  const signInDialog = document.getElementById("sign-in-dialog")
+  if (typeof signInDialog.showModal === "function") {
+    signInDialog.showModal()
+  } else {
+    alert("The dialog API is not supported by this browser")
+  }
   const userForm = document.getElementById("sign-in")
   userForm.addEventListener('submit', userSignIn)
 
@@ -21,6 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function userSignIn(e) {
   e.preventDefault();
+  document.getElementById('sign-in-dialog').close()
   const name = e.target.elements["name"].value
 
   return Adapter.create('users', { name })
@@ -30,8 +37,9 @@ function userSignIn(e) {
     } else {
       USER_NAME = json.name;
       USER_ID = json.id;
-      document.getElementById("sign-in-div").innerHTML = `Welcome, ${json.name}`
-      // renderGifs()
+      document.getElementById("greeting").textContent = `Welcome, ${json.name}`
+      document.querySelectorAll('.to-show').forEach(div => div.style.display="block")
+      
       Gif.renderAll()
     }
   });
@@ -118,6 +126,73 @@ function renderDetails(data) {
   // return data;
   Review.renderAll();
 }
+
+// FIXME: Check these!!
+
+function appendRatingOptions(ratingField) {
+  for (let i = 5; i >= 0; i--) {
+    const option = document.createElement("option");
+    option.value = i;
+    option.textContent = ratingToStars(i);
+    ratingField.append(option);
+  }
+}
+
+function ratingToStars(rating) {
+  let stars = ''
+  for(let i = rating; i > 0; i--) {
+    stars += '\u2605'
+  }
+  let nonStars = 5 - rating
+  for(let i = nonStars; i > 0; i--) {
+    stars += '\u2606'
+  }
+  return stars
+}
+
+function renderReview(data) {
+  const reviews = document.getElementById("reviews");
+  const content = document.createElement("div");
+  content.className = "review-card"
+
+  const author = document.createElement("p");
+  author.innerHTML = `<strong>${data.user_name.toLowerCase()}</strong> says:`;
+  content.append(author);
+
+  const rating = document.createElement("p");
+  rating.innerHTML = ratingToStars(data.rating)
+  content.append(rating);
+
+  const reviewContent = document.createElement("p");
+  reviewContent.className = "review-content";
+  reviewContent.textContent = data.content;
+  content.append(reviewContent);
+
+  const dateFromJSON = new Date(data.updated_at);
+  const date = document.createElement("p")
+  date.innerText = dateFromJSON.toLocaleString();
+  content.append(date);
+
+  if (data.user_id === USER_ID) {
+    const deleteButton = document.createElement('button');
+    deleteButton.dataset.id = data.id;
+    deleteButton.textContent = "Delete";
+    deleteButton.addEventListener('click', handleDeleteReview);
+
+    content.append(deleteButton);
+
+    const editButton = document.createElement('button');
+    editButton.dataset.id = data.id;
+    editButton.textContent = "Edit";
+    editButton.addEventListener('click', handleEditReview)
+
+    content.append(editButton);
+  }
+
+  reviews.append(content);
+}
+
+// FIXME: end
 
 function handleReviewSubmission(e) {
   e.preventDefault();
