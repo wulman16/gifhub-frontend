@@ -19,7 +19,6 @@ document.addEventListener("DOMContentLoaded", () => {
 function userSignIn(e) {
   e.preventDefault();
   const name = e.target.elements["name"].value
-  console.log(name)
 
   return createUser({ name })
   .then(json => {
@@ -66,9 +65,7 @@ function renderGifThumbnail(data) {
   const avgRating = document.createElement("p");
   avgRating.id = "gif-thumbnail-rating";
   avgRating.textContent = parseFloat(data.avg_rating).toFixed(1)
-  if (data.reviews.length > 0) {
-    li.append(avgRating);
-  }
+  li.append(avgRating);
 
   ul.append(li);
 }
