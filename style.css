@@ -44,3 +44,11 @@ li {
 .to-show {
   display: none;
 }
+
+#site-name {
+  text-align: center;
+}
+
+#new-gif-form-message {
+  display: inline-block;
+}
