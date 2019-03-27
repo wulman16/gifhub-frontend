@@ -3,8 +3,8 @@ const API = `http://localhost:3000/api/v1`;
 let USER_NAME, USER_ID, GIF_ID;
 
 document.addEventListener("DOMContentLoaded", () => {
-  userSignIn()
-  .then(renderGifs);
+  const userForm = document.getElementById("sign-in")
+  userForm.addEventListener('submit', userSignIn)
 
   const sortDropdown = document.getElementById('sort-dropdown')
   sortDropdown.addEventListener('change', sortGifs)
@@ -16,8 +16,10 @@ document.addEventListener("DOMContentLoaded", () => {
   form.addEventListener("submit", handleGifSubmission);
 });
 
-function userSignIn() {
-  const name = prompt("Please Sign In:");
+function userSignIn(e) {
+  e.preventDefault();
+  const name = e.target.elements["name"].value
+  console.log(name)
 
   return createUser({ name })
   .then(json => {
@@ -26,6 +28,8 @@ function userSignIn() {
     } else {
       USER_NAME = json.name;
       USER_ID = json.id;
+      document.getElementById("sign-in-div").innerHTML = `Welcome, ${json.name}`
+      renderGifs()
     }
   });
 }
