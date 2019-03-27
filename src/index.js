@@ -155,6 +155,7 @@ function renderAllReviews(data) {
   reviews.innerHTML = "";
 
   renderReviewForm();
+  // const sorted =
   data.reviews.forEach(renderReview);
 }
 
@@ -175,6 +176,11 @@ function renderReview(data) {
   const rating = document.createElement("p");
   rating.innerHTML = `<span class="review-rating"><strong>${data.rating}</strong></span> stars`;
   content.append(rating);
+
+  const dateFromJSON = new Date(data.updated_at);
+  const date = document.createElement("p")
+  date.innerText = dateFromJSON.toLocaleString();
+  content.append(date);
 
   if (data.user_id === USER_ID) {
     // console.log(`${USER_NAME} created this review`)
