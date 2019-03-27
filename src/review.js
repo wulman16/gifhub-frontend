@@ -37,7 +37,9 @@ class Review {
     content.append(reviewContent);
 
     const rating = document.createElement("p");
-    rating.innerHTML = `<span class="review-rating"><strong>${data.rating}</strong></span> stars`;
+    // rating.innerHTML = `<span class="review-rating"><strong>${data.rating}</strong></span> stars`;
+    rating.className = "review-rating"
+    rating.innerHTML = ratingToStars(data.rating)
     content.append(rating);
 
     const dateFromJSON = new Date(data.updated_at);
@@ -130,10 +132,16 @@ class RatingField {
   }
 
   static appendRatingOptions(ratingField) {
-    for (let i = 1; i <= 5; i++) {
+    // for (let i = 1; i <= 5; i++) {
+    //   const option = document.createElement("option");
+    //   option.value = i;
+    //   option.textContent = i;
+    //   ratingField.append(option);
+    // }
+    for (let i = 5; i >= 0; i--) {
       const option = document.createElement("option");
       option.value = i;
-      option.textContent = i;
+      option.textContent = ratingToStars(i);
       ratingField.append(option);
     }
   }
