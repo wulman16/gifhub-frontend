@@ -20,9 +20,7 @@ class Gif {
     const avgRating = document.createElement("p");
     avgRating.id = "gif-thumbnail-rating";
     avgRating.textContent = parseFloat(data.avg_rating).toFixed(1)
-    if (data.reviews.length > 0) {
-      li.append(avgRating);
-    }
+    li.append(avgRating);
 
     ul.append(li);
   }
