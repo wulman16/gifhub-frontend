@@ -268,6 +268,7 @@ function handleReviewSubmission(e) {
     //   body: JSON.stringify(postBody)
     // })
     // .then(response => response.json())
+    Adapter.update('reviews', id, postBody)
     .then(data => {
       const reviewCard = document.getElementById('reviews').querySelector(".edited")
       const rating = reviewCard.querySelector('.review-rating')
@@ -283,14 +284,15 @@ function handleReviewSubmission(e) {
     const user_id = e.target.dataset.userId;
     const postBody = { user_id, rating, content, gif_id };
 
-    fetch(`${API}/reviews`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(postBody)
-    })
-    .then(res => res.json())
+    // fetch(`${API}/reviews`, {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json"
+    //   },
+    //   body: JSON.stringify(postBody)
+    // })
+    // .then(res => res.json())
+    Adapter.create('reviews', postBody)
     .then(data => {
       if (data.errors) {
         console.error(data.errors);
