@@ -75,7 +75,6 @@ function handleThumbnailClick(e) {
       .then(res => res.json())
       .then(renderDetails)
       .then(renderAllReviews)
-      // .then(renderReviewForm);
   }
 }
 
@@ -99,12 +98,6 @@ function renderDetails(data) {
   gif.src = data.url;
   gif.className = "gif-detail";
   gifDetails.append(gif);
-
-  // const reviewButton = document.createElement('button')
-  // reviewButton.innerText = "Add Review"
-  // reviewButton.addEventListener('click', handleReviewButtonClick)
-  // gifDetails.append(reviewButton)
-  // renderReviewForm();
 
   return data;
 }
@@ -177,8 +170,6 @@ function renderReview(data) {
   content.append(rating);
 
   if (data.user_id === USER_ID) {
-    // console.log(`${USER_NAME} created this review`)
-    // console.log(data)
     const deleteButton = document.createElement('button');
     deleteButton.dataset.id = data.id;
     deleteButton.textContent = "Delete";
@@ -271,14 +262,12 @@ function handleReviewSubmission(e) {
 }
 
 function handleDeleteReview(e) {
-  // console.log(e.target)
   const id = e.target.dataset.id;
   const review = e.target.parentNode;
 
   fetch(`${API}/reviews/${id}`, {
     method: "DELETE"
   })
-  // .then(console.log)
 
   review.parentNode.removeChild(review);
 }
@@ -298,25 +287,14 @@ function handleEditReview(e) {
   e.target.parentNode.classList += " edited"
 }
 
-function compareAvgRatings(a, b) {
-  if (a.avg_rating < b.avg_rating) {
-    return 1;
-  } else if (a.avg_rating > b.avg_rating) {
-    return -1;
-  } else {
-    return 0;
+function propertyComparator(property) {
+  return function(a, b) {
+    return a[property] - b[property]
   }
 }
 
-function compareCreatedAt(a, b) {
-  if (a.created_at < b.created_at) {
-    return -1
-  } else if (a.created_at > b.created_at) {
-    return 1
-  } else {
-    return 0
-  }
-}
+const compareAvgRatings = propertyComparator('avg_rating')
+const compareCreatedAt = propertyComparator('created_at')
 
 function sortGifs(e) {
   const selection = e.target.value
@@ -326,13 +304,13 @@ function sortGifs(e) {
     case 'best':
       fetch(`${API}/gifs`)
       .then(res => res.json())
-      .then(data => data.sort(compareAvgRatings))
+      .then(data => data.sort(compareAvgRatings).reverse())
       .then(sorted => sorted.forEach(gif => renderGifThumbnail(gif)))
       break;
     case 'worst':
       fetch(`${API}/gifs`)
       .then(res => res.json())
-      .then(data => data.sort(compareAvgRatings).reverse())
+      .then(data => data.sort(compareAvgRatings))
       .then(sorted => sorted.forEach(gif => renderGifThumbnail(gif)))
       break;
     case 'newest':
