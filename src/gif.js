@@ -1,5 +1,3 @@
-const GIFS_ENDPOINT = "gifs"
-
 class Gif {
   // constructor(data) {
   //   this.id = data.id

@@ -1,4 +1,5 @@
 const API = `http://localhost:3000/api/v1`;
+const GIFS_ENDPOINT = "gifs"
 const REVIEWS_ENDPOINT = "reviews"
 
 class Adapter {
