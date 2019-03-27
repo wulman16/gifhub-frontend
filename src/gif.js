@@ -1,4 +1,4 @@
-const GIF_ENDPOINT = "gifs"
+const GIFS_ENDPOINT = "gifs"
 
 class Gif {
   // constructor(data) {
@@ -32,7 +32,7 @@ class Gif {
   static renderAll() {
     document.getElementById("gif-list").innerHTML = "";
 
-    return Adapter.get(GIF_ENDPOINT)
+    return Adapter.get(GIFS_ENDPOINT)
       .then(data => data.forEach(Gif.renderThumbnail));
   }
 }
