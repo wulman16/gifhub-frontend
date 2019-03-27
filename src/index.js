@@ -37,42 +37,6 @@ function userSignIn(e) {
   });
 }
 
-// function createUser(data) {
-//   return fetch(`${API}/users`, {
-//     method: "POST",
-//     headers: {
-//       "Content-Type": "application/json"
-//     },
-//     body: JSON.stringify(data)
-//   })
-//   .then(response => response.json());
-// }
-
-function renderGifs() {
-  document.getElementById("gif-list").innerHTML = "";
-
-  return Adapter.get('gifs')
-    .then(data => data.forEach(renderGifThumbnail));
-}
-
-function renderGifThumbnail(data) {
-  const ul = document.getElementById("gif-list");
-  const li = document.createElement("li");
-
-  const img = document.createElement("img");
-  img.src = data.url;
-  img.className = "gif-thumbnail";
-  img.dataset.id = data.id;
-  li.append(img);
-
-  const avgRating = document.createElement("p");
-  avgRating.id = "gif-thumbnail-rating";
-  avgRating.textContent = parseFloat(data.avg_rating).toFixed(1)
-  li.append(avgRating);
-
-  ul.append(li);
-}
-
 function handleThumbnailClick(e) {
   if (e.target.tagName === "IMG") {
     const id = e.target.dataset.id
