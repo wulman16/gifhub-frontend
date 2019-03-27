@@ -21,7 +21,7 @@ function userSignIn(e) {
   const name = e.target.elements["name"].value
   console.log(name)
 
-  return createUser({ name })
+  return Adapter.create('users', { name })
   .then(json => {
     if (json.errors) {
       userSignIn();
@@ -34,22 +34,21 @@ function userSignIn(e) {
   });
 }
 
-function createUser(data) {
-  return fetch(`${API}/users`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(data)
-  })
-  .then(response => response.json());
-}
+// function createUser(data) {
+//   return fetch(`${API}/users`, {
+//     method: "POST",
+//     headers: {
+//       "Content-Type": "application/json"
+//     },
+//     body: JSON.stringify(data)
+//   })
+//   .then(response => response.json());
+// }
 
 function renderGifs() {
   document.getElementById("gif-list").innerHTML = "";
 
-  return fetch(`${API}/gifs`)
-    .then(res => res.json())
+  return Adapter.get('gifs')
     .then(data => data.forEach(renderGifThumbnail));
 }
 
@@ -75,9 +74,9 @@ function renderGifThumbnail(data) {
 
 function handleThumbnailClick(e) {
   if (e.target.tagName === "IMG") {
-    fetch(`${API}/gifs/${e.target.dataset.id}`)
-      .then(res => res.json())
-      .then(renderDetails)
+    const id = e.target.dataset.id
+
+    Adapter.get('gifs', id).then(renderDetails)
   }
 }
 
@@ -187,8 +186,7 @@ function renderAllReviews() {
 
   renderReviewForm();
 
-  fetch(`${API}/gifs/${GIF_ID}`)
-    .then(response => response.json())
+  Adapter.get("gifs", GIF_ID)
     .then(data => {
       // Sort by most recently updated review
       const sorted = data.reviews.sort((a,b) => {
@@ -248,15 +246,9 @@ function handleGifSubmission(e) {
   const title = e.target.elements["title"].value;
   const url = e.target.elements["url"].value;
   const postBody = { title, url };
-  fetch(`${API}/gifs`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(postBody)
-  })
-    .then(res => res.json())
-    .then(data => renderGifThumbnail(data));
+
+  Adapter.create('gifs', postBody)
+    .then(renderGifs);
 }
 
 function handleReviewSubmission(e) {
@@ -271,15 +263,7 @@ function handleReviewSubmission(e) {
 
     postBody = { rating, content };
 
-    fetch(`${API}/reviews/${id}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json"
-      },
-      body: JSON.stringify(postBody)
-    })
-    .then(response => response.json())
+    Adapter.update('reviews', id, postBody)
     .then(data => {
       const reviewCard = document.getElementById('reviews').querySelector(".edited")
       const rating = reviewCard.querySelector('.review-rating')
@@ -295,20 +279,11 @@ function handleReviewSubmission(e) {
     const user_id = e.target.dataset.userId;
     const postBody = { user_id, rating, content, gif_id };
 
-    fetch(`${API}/reviews`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(postBody)
-    })
-    .then(res => res.json())
+    Adapter.create('reviews', postBody)
     .then(data => {
       if (data.errors) {
         console.error(data.errors);
       } else {
-        // data.user_name = USER_NAME;
-        // renderReview(data);
         renderAllReviews();
       }
     });
@@ -321,9 +296,7 @@ function handleDeleteReview(e) {
   const id = e.target.dataset.id;
   const review = e.target.parentNode;
 
-  fetch(`${API}/reviews/${id}`, {
-    method: "DELETE"
-  })
+  Adapter.delete('reviews', id)
 
   review.parentNode.removeChild(review);
 }
@@ -332,8 +305,7 @@ function handleEditReview(e) {
   const form = document.getElementById('review-form');
   const id = e.target.dataset.id;
 
-  fetch(`${API}/reviews/${id}`)
-    .then(response => response.json())
+  Adapter.get('reviews', id)
     .then(data => {
       form.elements["rating"].value = data.rating;
       form.elements["content"].value = data.content;
@@ -356,8 +328,7 @@ function propertyComparator(prop, order) {
 }
 
 function fetchSortedGifs(sortFunction) {
-  fetch(`${API}/gifs`)
-    .then(res => res.json())
+  Adapter.get('gifs')
     .then(data => data.sort(sortFunction))
     .then(sorted => sorted.forEach(gif => renderGifThumbnail(gif)))
 }
