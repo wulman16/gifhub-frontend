@@ -17,4 +17,8 @@ class Adapter {
     return fetch(path)
     .then(response => response.json());
   }
+
+  // static update(endpoint, id) {
+
+  // }
 }

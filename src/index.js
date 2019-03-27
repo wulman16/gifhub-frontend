@@ -182,8 +182,7 @@ function renderAllReviews() {
 
   renderReviewForm();
 
-  fetch(`${API}/gifs/${GIF_ID}`)
-    .then(response => response.json())
+  Adapter.get("gifs", GIF_ID)
     .then(data => {
       // Sort by most recently updated review
       const sorted = data.reviews.sort((a,b) => {
@@ -243,14 +242,7 @@ function handleGifSubmission(e) {
   const title = e.target.elements["title"].value;
   const url = e.target.elements["url"].value;
   const postBody = { title, url };
-  // fetch(`${API}/gifs`, {
-  //   method: "POST",
-  //   headers: {
-  //     "Content-Type": "application/json"
-  //   },
-  //   body: JSON.stringify(postBody)
-  // })
-  //   .then(res => res.json())
+
   Adapter.create('gifs', postBody)
     .then(renderGifs);
 }
