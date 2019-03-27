@@ -3,6 +3,12 @@ const API = `http://localhost:3000/api/v1`;
 let USER_NAME, USER_ID, GIF_ID;
 
 document.addEventListener("DOMContentLoaded", () => {
+  const signInDialog = document.getElementById("sign-in-dialog")
+  if (typeof signInDialog.showModal === "function") {
+    signInDialog.showModal()
+  } else {
+    alert("The dialog API is not supported by this browser")
+  }
   const userForm = document.getElementById("sign-in")
   userForm.addEventListener('submit', userSignIn)
 
@@ -18,6 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function userSignIn(e) {
   e.preventDefault();
+  document.getElementById('sign-in-dialog').close()
   const name = e.target.elements["name"].value
 
   return Adapter.create('users', { name })
@@ -27,7 +34,7 @@ function userSignIn(e) {
     } else {
       USER_NAME = json.name;
       USER_ID = json.id;
-      document.getElementById("sign-in-div").innerHTML = `Welcome, ${json.name}`
+      // document.getElementById("sign-in-div").innerHTML = `Welcome, ${json.name}`
       renderGifs()
     }
   });

@@ -8,13 +8,20 @@
   <title>GIF Reviewer</title>
 </head>
 <body>
-  <div id="sign-in-div">
+  <dialog id="sign-in-dialog">
+    <form method="dialog" id="sign-in">
+      <label>Please enter your name: </label>
+      <input type="text" name="name">
+      <input type="submit">
+    </form>
+  </dialog>
+  <!-- <div id="sign-in-div">
     <form id="sign-in">
       <label>Please enter your name: </label>
       <input type="text" name="name">
       <input type="submit">
     </form>
-  </div>
+  </div> -->
   <div id="form-panel">
     <form id="new-gif-form">
       <h4>Add a New GIF</h4>
