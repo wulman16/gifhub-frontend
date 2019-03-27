@@ -27,36 +27,10 @@ function userSignIn(e) {
       USER_NAME = json.name;
       USER_ID = json.id;
       document.getElementById("sign-in-div").innerHTML = `Welcome, ${json.name}`
-      renderGifs()
+      // renderGifs()
+      Gif.renderAll()
     }
   });
-}
-
-function renderGifs() {
-  document.getElementById("gif-list").innerHTML = "";
-
-  return Adapter.get('gifs')
-    .then(data => data.forEach(renderGifThumbnail));
-}
-
-function renderGifThumbnail(data) {
-  const ul = document.getElementById("gif-list");
-  const li = document.createElement("li");
-
-  const img = document.createElement("img");
-  img.src = data.url;
-  img.className = "gif-thumbnail";
-  img.dataset.id = data.id;
-  li.append(img);
-
-  const avgRating = document.createElement("p");
-  avgRating.id = "gif-thumbnail-rating";
-  avgRating.textContent = parseFloat(data.avg_rating).toFixed(1)
-  if (data.reviews.length > 0) {
-    li.append(avgRating);
-  }
-
-  ul.append(li);
 }
 
 function handleThumbnailClick(e) {
@@ -317,7 +291,7 @@ function propertyComparator(prop, order) {
 function fetchSortedGifs(sortFunction) {
   Adapter.get('gifs')
     .then(data => data.sort(sortFunction))
-    .then(sorted => sorted.forEach(gif => renderGifThumbnail(gif)))
+    .then(sorted => sorted.forEach(gif => Gif.renderThumbnail(gif)))
 }
 
 function sortGifs(e) {
