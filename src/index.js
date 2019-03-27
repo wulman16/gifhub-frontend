@@ -102,6 +102,8 @@ function renderDetails(data) {
   return data;
 }
 
+//////// REVIEW FORM FUNCTIONS ////////
+
 function initializeReviewForm() {
   let reviewForm = document.createElement("form");
   reviewForm.id = "review-form";
@@ -116,14 +118,13 @@ function initializeRatingField() {
   return ratingField
 }
 
-function appendDefaultOptions(ratingField) {
+function appendDefaultOption(ratingField) {
   const defaultOption = document.createElement("option");
   defaultOption.value = "";
   defaultOption.selected = true;
   defaultOption.disabled = true;
   defaultOption.textContent = "Select a Rating";
   ratingField.append(defaultOption);
-  return ratingField
 }
 
 function appendRatingOptions(ratingField) {
@@ -133,7 +134,11 @@ function appendRatingOptions(ratingField) {
     option.textContent = i;
     ratingField.append(option);
   }
-  return ratingField
+}
+
+function appendOptions(ratingField) {
+  appendDefaultOption(ratingField)
+  appendRatingOptions(ratingField)
 }
 
 function appendContentField(reviewForm) {
@@ -141,7 +146,6 @@ function appendContentField(reviewForm) {
   contentField.name = "content";
   contentField.placeholder = "Type your review here!";
   reviewForm.append(contentField);
-  return reviewForm
 }
 
 function appendSubmitButton(reviewForm) {
@@ -149,18 +153,15 @@ function appendSubmitButton(reviewForm) {
   submitButton.type = "submit"
   reviewForm.append(submitButton)
   reviewForm.addEventListener("submit", handleReviewSubmission)
-  return reviewForm
 }
 
 function createReviewForm() {
   let reviewForm = initializeReviewForm()
   let ratingField = initializeRatingField()
-  ratingField = appendDefaultOptions(ratingField)
-  ratingField = appendRatingOptions(ratingField)
-  reviewForm.append(ratingField);
-  reviewForm = appendContentField(reviewForm)
-  reviewForm = appendSubmitButton(reviewForm)
-
+  appendOptions(ratingField)
+  reviewForm.append(ratingField)
+  appendContentField(reviewForm)
+  appendSubmitButton(reviewForm)
   return reviewForm
 }
 
@@ -169,6 +170,10 @@ function renderReviewForm() {
   const reviewForm = createReviewForm()
   reviewList.append(reviewForm);
 }
+
+
+
+
 
 function renderAllReviews(data) {
   const reviews = document.getElementById("reviews");
