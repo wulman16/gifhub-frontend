@@ -1,5 +1,3 @@
-const API = `http://localhost:3000/api/v1`;
-
 let USER_NAME, USER_ID, GIF_ID;
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -22,6 +20,11 @@ document.addEventListener("DOMContentLoaded", () => {
   form.addEventListener("submit", handleGifSubmission);
 });
 
+/**
+ *
+ * @summary this section is for event handlers
+ */
+
 function userSignIn(e) {
   e.preventDefault();
   document.getElementById('sign-in-dialog').close()
@@ -36,46 +39,10 @@ function userSignIn(e) {
       USER_ID = json.id;
       document.getElementById("greeting").textContent = `Welcome, ${json.name}`
       document.querySelectorAll('.to-show').forEach(div => div.style.display="block")
-      renderGifs()
+      
+      Gif.renderAll()
     }
   });
-}
-
-// function createUser(data) {
-//   return fetch(`${API}/users`, {
-//     method: "POST",
-//     headers: {
-//       "Content-Type": "application/json"
-//     },
-//     body: JSON.stringify(data)
-//   })
-//   .then(response => response.json());
-// }
-
-function renderGifs() {
-  document.getElementById("gif-list").innerHTML = "";
-
-  return Adapter.get('gifs')
-    .then(data => data.forEach(renderGifThumbnail));
-}
-
-function renderGifThumbnail(data) {
-  const ul = document.getElementById("gif-list");
-  const li = document.createElement("li");
-
-  const img = document.createElement("img");
-  img.src = data.url;
-  img.className = "gif-thumbnail";
-  img.dataset.id = data.id;
-  li.append(img);
-
-  const avgRating = document.createElement("p");
-  avgRating.className = 'avg-rating'
-  avgRating.id = "gif-thumbnail-rating";
-  avgRating.textContent = parseFloat(data.avg_rating).toFixed(1)
-  li.append(avgRating);
-
-  ul.append(li);
 }
 
 function handleThumbnailClick(e) {
@@ -85,6 +52,41 @@ function handleThumbnailClick(e) {
     Adapter.get('gifs', id).then(renderDetails)
   }
 }
+
+function handleGifSubmission(e) {
+  e.preventDefault();
+  const title = e.target.elements["title"].value;
+  const url = e.target.elements["url"].value;
+  const postBody = { title, url };
+
+  Adapter.create('gifs', postBody)
+    .then(renderGifs);
+}
+
+function sortGifs(e) {
+  const selection = e.target.value
+  const gifs = document.getElementById('gif-list')
+  gifs.innerHTML = ''
+  switch (selection) {
+    case 'best':
+      fetchSortedGifs(propertyComparator('avg_rating', 'descending'))
+      break;
+    case 'worst':
+      fetchSortedGifs(propertyComparator('avg_rating', 'ascending'))
+      break;
+    case 'newest':
+      fetchSortedGifs(propertyComparator('created_at', 'descending'))
+      break;
+    case 'oldest':
+      fetchSortedGifs(propertyComparator('created_at', 'ascending'))
+      break;
+  }
+}
+
+/**
+ * TODO:
+ * @todo move these into separate class
+ */
 
 function renderDetails(data) {
   GIF_ID = data.id;
@@ -122,33 +124,10 @@ function renderDetails(data) {
   // renderReviewForm();
 
   // return data;
-  renderAllReviews();
+  Review.renderAll();
 }
 
-//////// REVIEW FORM FUNCTIONS ////////
-
-function initializeReviewForm() {
-  let reviewForm = document.createElement("form");
-  reviewForm.id = "review-form";
-  reviewForm.dataset.gifId = GIF_ID;
-  reviewForm.dataset.userId = USER_ID;
-  return reviewForm
-}
-
-function initializeRatingField() {
-  let ratingField = document.createElement("select");
-  ratingField.name = "rating";
-  return ratingField
-}
-
-function appendDefaultOption(ratingField) {
-  const defaultOption = document.createElement("option");
-  defaultOption.value = "";
-  defaultOption.selected = true;
-  defaultOption.disabled = true;
-  defaultOption.textContent = "Select a Rating";
-  ratingField.append(defaultOption);
-}
+// FIXME: Check these!!
 
 function appendRatingOptions(ratingField) {
   for (let i = 5; i >= 0; i--) {
@@ -169,60 +148,6 @@ function ratingToStars(rating) {
     stars += '\u2606'
   }
   return stars
-}
-
-function appendOptions(ratingField) {
-  appendDefaultOption(ratingField)
-  appendRatingOptions(ratingField)
-}
-
-function appendContentField(reviewForm) {
-  const contentField = document.createElement("textarea");
-  contentField.name = "content";
-  contentField.placeholder = "Type your review here!";
-  reviewForm.append(contentField);
-}
-
-function appendSubmitButton(reviewForm) {
-  const submitButton = document.createElement("input")
-  submitButton.type = "submit"
-  reviewForm.append(submitButton)
-  reviewForm.addEventListener("submit", handleReviewSubmission)
-}
-
-function createReviewForm() {
-  let reviewForm = initializeReviewForm()
-  let ratingField = initializeRatingField()
-  appendOptions(ratingField)
-  reviewForm.append(ratingField)
-  appendContentField(reviewForm)
-  appendSubmitButton(reviewForm)
-  return reviewForm
-}
-
-function renderReviewForm() {
-  const reviewList = document.getElementById("reviews");
-  const reviewForm = createReviewForm()
-  reviewList.append(reviewForm);
-}
-
-function renderAllReviews() {
-  const reviews = document.getElementById("reviews");
-  reviews.innerHTML = "";
-
-  renderReviewForm();
-
-  Adapter.get("gifs", GIF_ID)
-    .then(data => {
-      // Sort by most recently updated review
-      const sorted = data.reviews.sort((a,b) => {
-        const dateA = new Date(a.updated_at);
-        const dateB = new Date(b.updated_at);
-        return (dateB - dateA);
-      })
-
-      sorted.forEach(renderReview);
-    })
 }
 
 function renderReview(data) {
@@ -267,15 +192,7 @@ function renderReview(data) {
   reviews.append(content);
 }
 
-function handleGifSubmission(e) {
-  e.preventDefault();
-  const title = e.target.elements["title"].value;
-  const url = e.target.elements["url"].value;
-  const postBody = { title, url };
-
-  Adapter.create('gifs', postBody)
-    .then(renderGifs);
-}
+// FIXME: end
 
 function handleReviewSubmission(e) {
   e.preventDefault();
@@ -310,7 +227,7 @@ function handleReviewSubmission(e) {
       if (data.errors) {
         console.error(data.errors);
       } else {
-        renderAllReviews();
+        Review.renderAll();
       }
     });
   }
@@ -356,25 +273,5 @@ function propertyComparator(prop, order) {
 function fetchSortedGifs(sortFunction) {
   Adapter.get('gifs')
     .then(data => data.sort(sortFunction))
-    .then(sorted => sorted.forEach(gif => renderGifThumbnail(gif)))
-}
-
-function sortGifs(e) {
-  const selection = e.target.value
-  const gifs = document.getElementById('gif-list')
-  gifs.innerHTML = ''
-  switch (selection) {
-    case 'best':
-      fetchSortedGifs(propertyComparator('avg_rating', 'descending'))
-      break;
-    case 'worst':
-      fetchSortedGifs(propertyComparator('avg_rating', 'ascending'))
-      break;
-    case 'newest':
-      fetchSortedGifs(propertyComparator('created_at', 'descending'))
-      break;
-    case 'oldest':
-      fetchSortedGifs(propertyComparator('created_at', 'ascending'))
-      break;
-  }
+    .then(sorted => sorted.forEach(gif => Gif.renderThumbnail(gif)))
 }
