@@ -70,9 +70,9 @@ function renderGifThumbnail(data) {
 
 function handleThumbnailClick(e) {
   if (e.target.tagName === "IMG") {
-    fetch(`${API}/gifs/${e.target.dataset.id}`)
-      .then(res => res.json())
-      .then(renderDetails)
+    const id = e.target.dataset.id
+
+    Adapter.get('gifs', id).then(renderDetails)
   }
 }
 
@@ -243,15 +243,16 @@ function handleGifSubmission(e) {
   const title = e.target.elements["title"].value;
   const url = e.target.elements["url"].value;
   const postBody = { title, url };
-  fetch(`${API}/gifs`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify(postBody)
-  })
-    .then(res => res.json())
-    .then(data => renderGifThumbnail(data));
+  // fetch(`${API}/gifs`, {
+  //   method: "POST",
+  //   headers: {
+  //     "Content-Type": "application/json"
+  //   },
+  //   body: JSON.stringify(postBody)
+  // })
+  //   .then(res => res.json())
+  Adapter.create('gifs', postBody)
+    .then(renderGifs);
 }
 
 function handleReviewSubmission(e) {

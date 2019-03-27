@@ -11,8 +11,10 @@ class Adapter {
     }).then(response => response.json());
   }
 
-  static get(endpoint) {
-    return fetch(`${API}/${endpoint}`)
+  static get(endpoint, id=null) {
+    const path = id ? `${API}/${endpoint}/${id}` : `${API}/${endpoint}`
+
+    return fetch(path)
     .then(response => response.json());
   }
 }
