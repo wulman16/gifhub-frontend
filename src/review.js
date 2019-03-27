@@ -130,7 +130,7 @@ class RatingField {
   }
 
   static appendRatingOptions(ratingField) {
-    for (let i = 0; i <= 5; i++) {
+    for (let i = 1; i <= 5; i++) {
       const option = document.createElement("option");
       option.value = i;
       option.textContent = i;
