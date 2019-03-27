@@ -277,8 +277,9 @@ function handleReviewSubmission(e) {
       if (data.errors) {
         console.error(data.errors);
       } else {
-        data.user_name = USER_NAME;
-        renderReview(data);
+        // data.user_name = USER_NAME;
+        // renderReview(data);
+        renderAllReviews();
       }
     });
   }
