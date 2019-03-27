@@ -14,6 +14,11 @@ document.addEventListener("DOMContentLoaded", () => {
   form.addEventListener("submit", handleGifSubmission);
 });
 
+/**
+ *
+ * @summary this section is for event handlers
+ */
+
 function userSignIn(e) {
   e.preventDefault();
   const name = e.target.elements["name"].value
@@ -40,6 +45,41 @@ function handleThumbnailClick(e) {
     Adapter.get('gifs', id).then(renderDetails)
   }
 }
+
+function handleGifSubmission(e) {
+  e.preventDefault();
+  const title = e.target.elements["title"].value;
+  const url = e.target.elements["url"].value;
+  const postBody = { title, url };
+
+  Adapter.create('gifs', postBody)
+    .then(renderGifs);
+}
+
+function sortGifs(e) {
+  const selection = e.target.value
+  const gifs = document.getElementById('gif-list')
+  gifs.innerHTML = ''
+  switch (selection) {
+    case 'best':
+      fetchSortedGifs(propertyComparator('avg_rating', 'descending'))
+      break;
+    case 'worst':
+      fetchSortedGifs(propertyComparator('avg_rating', 'ascending'))
+      break;
+    case 'newest':
+      fetchSortedGifs(propertyComparator('created_at', 'descending'))
+      break;
+    case 'oldest':
+      fetchSortedGifs(propertyComparator('created_at', 'ascending'))
+      break;
+  }
+}
+
+/**
+ * TODO:
+ * @todo move these into separate class
+ */
 
 function renderDetails(data) {
   GIF_ID = data.id;
@@ -202,16 +242,6 @@ function renderReview(data) {
   reviews.append(content);
 }
 
-function handleGifSubmission(e) {
-  e.preventDefault();
-  const title = e.target.elements["title"].value;
-  const url = e.target.elements["url"].value;
-  const postBody = { title, url };
-
-  Adapter.create('gifs', postBody)
-    .then(renderGifs);
-}
-
 function handleReviewSubmission(e) {
   e.preventDefault();
 
@@ -292,24 +322,4 @@ function fetchSortedGifs(sortFunction) {
   Adapter.get('gifs')
     .then(data => data.sort(sortFunction))
     .then(sorted => sorted.forEach(gif => Gif.renderThumbnail(gif)))
-}
-
-function sortGifs(e) {
-  const selection = e.target.value
-  const gifs = document.getElementById('gif-list')
-  gifs.innerHTML = ''
-  switch (selection) {
-    case 'best':
-      fetchSortedGifs(propertyComparator('avg_rating', 'descending'))
-      break;
-    case 'worst':
-      fetchSortedGifs(propertyComparator('avg_rating', 'ascending'))
-      break;
-    case 'newest':
-      fetchSortedGifs(propertyComparator('created_at', 'descending'))
-      break;
-    case 'oldest':
-      fetchSortedGifs(propertyComparator('created_at', 'ascending'))
-      break;
-  }
 }
