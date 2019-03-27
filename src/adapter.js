@@ -18,7 +18,15 @@ class Adapter {
     .then(response => response.json());
   }
 
-  // static update(endpoint, id) {
-
-  // }
+  static update(endpoint, id, data) {
+    return fetch(`${API}/${endpoint}/${id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json"
+      },
+      body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+  }
 }

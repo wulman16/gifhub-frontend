@@ -259,15 +259,15 @@ function handleReviewSubmission(e) {
 
     postBody = { rating, content };
 
-    fetch(`${API}/reviews/${id}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json"
-      },
-      body: JSON.stringify(postBody)
-    })
-    .then(response => response.json())
+    // fetch(`${API}/reviews/${id}`, {
+    //   method: "PATCH",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //     Accept: "application/json"
+    //   },
+    //   body: JSON.stringify(postBody)
+    // })
+    // .then(response => response.json())
     .then(data => {
       const reviewCard = document.getElementById('reviews').querySelector(".edited")
       const rating = reviewCard.querySelector('.review-rating')
