@@ -1,6 +1,13 @@
 // const API = `http://localhost:3000/api/v1`;
 
 class Adapter {
+  static get(endpoint, id=null) {
+    const path = id ? `${API}/${endpoint}/${id}` : `${API}/${endpoint}`
+
+    return fetch(path)
+    .then(response => response.json());
+  }
+
   static create(endpoint, data) {
     return fetch(`${API}/${endpoint}`, {
       method: "POST",
@@ -9,13 +16,6 @@ class Adapter {
       },
       body: JSON.stringify(data)
     }).then(response => response.json());
-  }
-
-  static get(endpoint, id=null) {
-    const path = id ? `${API}/${endpoint}/${id}` : `${API}/${endpoint}`
-
-    return fetch(path)
-    .then(response => response.json());
   }
 
   static update(endpoint, id, data) {
@@ -28,5 +28,11 @@ class Adapter {
       body: JSON.stringify(data)
     })
     .then(response => response.json())
+  }
+
+  static delete(endpoint, id) {
+    return fetch(`${API}/${endpoint}/${id}`, {
+      method: "DELETE"
+    })
   }
 }
