@@ -34,8 +34,15 @@
 }
 
 .gif-detail {
-  width: 150px;
-  height: 150px;
+  width: 250px;
+  height: 250px;
+  margin: 0 auto;
+}
+
+#gif-details {
+  /* border: 1px solid black; */
+  text-align: center;
+  margin-bottom: 10px;
 }
 
 ul {
@@ -127,9 +134,36 @@ ul {
 #detail-dialog {
   border-radius: 7px;
   position: fixed;
+  /* max-width: 400px; */
+  width: 400px;
   /* top: 5%; */
   /* height: 450px; */
   height: 80%;
   /* min-height: max-content; */
   overflow: auto;
+}
+
+#review-form-container {
+  border: 1px solid black;
+  /* text-align: center; */
+  padding: 0 10px;
+}
+
+#review-form-container textarea,
+#review-form-container select,
+#review-form-container input {
+  /* display: block; */
+  margin-bottom: 10px;
+}
+
+#review-form-container select,
+#review-form-container input {
+  display: inline-block;
+  margin-right: 10px;
+}
+
+#review-form-container textarea {
+  display: block;
+  width: 250px;
+  height: 60px;
 }

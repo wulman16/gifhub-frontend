@@ -121,12 +121,16 @@ class ReviewForm {
   static render() {
     const reviewForm = ReviewForm.initialize()
 
-    reviewForm.append(RatingField.render())
+    const heading = document.createElement('h3')
+    heading.innerText = "Your Voice Matters:"
+    reviewForm.append(heading);
 
     const contentField = document.createElement("textarea");
     contentField.name = "content";
     contentField.placeholder = "Type your review here!";
     reviewForm.append(contentField);
+
+    reviewForm.append(RatingField.render())
 
     const submitButton = document.createElement("input")
     submitButton.type = "submit"
