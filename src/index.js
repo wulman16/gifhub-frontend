@@ -148,6 +148,7 @@ function handleReviewSubmission(e) {
 
   const rating = e.target.elements["rating"].value;
   const content = e.target.elements["content"].value;
+  let postBody;
 
   if(e.target.dataset.reviewId) {
     const id = e.target.dataset.reviewId;
@@ -176,7 +177,8 @@ function handleReviewSubmission(e) {
       if (data.errors) {
         console.error(data.errors);
       } else {
-        Review.renderAll();
+        const reviews = document.getElementById('reviews')
+        reviews.prepend(Review.render(data));
       }
     });
   }
