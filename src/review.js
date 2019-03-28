@@ -110,7 +110,7 @@ class RatingField {
     defaultOption.textContent = "Select a Rating";
     ratingField.append(defaultOption);
 
-    for (let i = 5; i >= 0; i--) {
+    for (let i = 5; i > 0; i--) {
       const option = document.createElement("option");
       option.value = i;
       option.textContent = ratingToStars(i);
