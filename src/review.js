@@ -168,6 +168,7 @@ class ReviewForm {
       Review.createAndRender(postBody);
     }
 
+    console.log(e.target)
     e.target.reset();
   }
 }
@@ -181,6 +182,7 @@ class RatingField {
     defaultOption.value = "";
     defaultOption.selected = true;
     defaultOption.disabled = true;
+    defaultOption.defaultSelected = true;
     defaultOption.textContent = "Select a Rating";
     ratingField.append(defaultOption);
 
