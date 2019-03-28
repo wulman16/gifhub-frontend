@@ -59,8 +59,17 @@ li {
   font-size: 3.5em;
 }
 
+#new-gif-form {
+  text-align: center;
+}
+
 #new-gif-form-message {
   display: inline-block;
+  font-size: 1.5em;
+}
+
+#new-gif-title, #new-gif-url {
+  font-size: 1em;
 }
 
 #gif-thumbnail-title, #gif-thumbnail-rating {
