@@ -143,54 +143,6 @@ function ratingToStars(rating) {
   return stars
 }
 
-function handleReviewSubmission(e) {
-  e.preventDefault();
-
-  const rating = e.target.elements["rating"].value;
-  const content = e.target.elements["content"].value;
-  let postBody;
-
-  if(e.target.dataset.reviewId) {
-    const id = e.target.dataset.reviewId;
-    delete e.target.dataset.reviewId;
-
-    postBody = { rating, content };
-
-    Review.updateAndRender(id, postBody);
-  } else {
-    const gif_id = e.target.dataset.gifId;
-    const user_id = e.target.dataset.userId;
-    postBody = { user_id, rating, content, gif_id };
-
-    Review.createAndRender(postBody);
-  }
-
-  e.target.reset();
-}
-
-function handleDeleteReview(e) {
-  const id = e.target.dataset.id;
-  const review = e.target.parentNode;
-
-  Adapter.delete('reviews', id)
-
-  review.parentNode.removeChild(review);
-}
-
-function handleEditReview(e) {
-  const form = document.getElementById('review-form');
-  const id = e.target.dataset.id;
-
-  Adapter.get('reviews', id)
-    .then(data => {
-      form.elements["rating"].value = data.rating;
-      form.elements["content"].value = data.content;
-      form.dataset.reviewId = data.id;
-    })
-
-  e.target.parentNode.classList += " edited"
-}
-
 function propertyComparator(prop, order) {
   if (order === 'ascending') {
     return function(a, b) {
