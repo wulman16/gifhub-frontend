@@ -117,6 +117,9 @@ function renderDetails(data) {
   gif.className = "gif-detail";
   gifDetails.append(gif);
 
+  const reviewFormContainer = document.getElementById('review-form-container')
+  reviewFormContainer.append(ReviewForm.render())
+
   // const reviewButton = document.createElement('button')
   // reviewButton.innerText = "Add Review"
   // reviewButton.addEventListener('click', handleReviewButtonClick)

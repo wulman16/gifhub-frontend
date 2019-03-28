@@ -7,7 +7,7 @@ class Review {
     const reviews = document.getElementById("reviews");
     reviews.innerHTML = "";
 
-    reviews.append(ReviewForm.render());
+    // reviews.append(ReviewForm.render());
 
     Adapter.get(GIFS_ENDPOINT, GIF_ID)
       .then(data => {
