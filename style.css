@@ -6,9 +6,9 @@
   font-weight: 700;
 }
 
-div {
+/* div {
   border: 1px solid black;
-}
+} */
 
 .container {
   display: grid;
@@ -64,5 +64,6 @@ li {
 
 #gif-thumbnail-title, #gif-thumbnail-rating {
   display: inline-block;
-  margin: 5px;
+  margin: 3px;
+  margin-bottom: 20px;
 }
