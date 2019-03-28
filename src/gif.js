@@ -17,10 +17,27 @@ class Gif {
     img.dataset.id = data.id;
     li.append(img);
 
-    const avgRating = document.createElement("p");
-    avgRating.id = "gif-thumbnail-rating";
-    avgRating.textContent = parseFloat(data.avg_rating).toFixed(1)
-    li.append(avgRating);
+    const info = document.createElement('div')
+    info.id = "gif-thumbnail-text"
+
+    const title = document.createElement('p')
+    title.id = "gif-thumbnail-title"
+    title.textContent = data.title
+    info.append(title)
+
+    const rating = document.createElement('p')
+    rating.id = "gif-thumbnail-rating"
+    rating.textContent = parseFloat(data.avg_rating).toFixed(1)
+    info.append(rating)
+
+    li.append(info)
+
+    // const info = document.createElement("p")
+    // info.id = "gif-thumbnail-text"
+    // info.textContent = data.title + " "
+    // li.append(info)
+
+    // info.textContent += parseFloat(data.avg_rating).toFixed(1)
 
     ul.append(li);
   }

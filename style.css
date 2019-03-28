@@ -2,13 +2,13 @@
   font-family: 'Work Sans', sans-serif;
 }
 
-.avg-rating, #site-name {
+.avg-rating, #site-name, #gif-thumbnail-title {
   font-weight: 700;
 }
 
-div {
+/* div {
   border: 1px solid black;
-}
+} */
 
 .container {
   display: grid;
@@ -20,6 +20,7 @@ div {
   width: 200px;
   height: 200px;
   margin: 10px;
+  cursor: pointer;
 }
 
 #gif-list {
@@ -55,8 +56,35 @@ li {
 
 #site-name {
   text-align: center;
+  font-size: 3.5em;
+}
+
+#new-gif-form {
+  text-align: center;
 }
 
 #new-gif-form-message {
   display: inline-block;
+  font-size: 1.5em;
+}
+
+#new-gif-title, #new-gif-url {
+  font-size: 1em;
+}
+
+#gif-thumbnail-title, #gif-thumbnail-rating {
+  display: inline-block;
+  margin: 3px;
+  margin-bottom: 20px;
+  font-size: 1.3em;
+}
+
+#sign-in-dialog {
+  font-size: 1.5em;
+  font-weight: 700;
+}
+
+#sign-in-name {
+  font-size: 1em;
+  font-weight: 700;
 }
