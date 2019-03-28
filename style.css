@@ -70,13 +70,14 @@ li {
 
 #new-gif-title, #new-gif-url {
   font-size: 1em;
+  width: 150px;
 }
 
 #gif-thumbnail-title, #gif-thumbnail-rating {
   display: inline-block;
   margin: 3px;
   margin-bottom: 20px;
-  font-size: 1.3em;
+  font-size: 1.2em;
 }
 
 #sign-in-dialog {
