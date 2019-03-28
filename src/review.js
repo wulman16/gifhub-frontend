@@ -105,7 +105,7 @@ class ReviewForm {
     const submitButton = document.createElement("input")
     submitButton.type = "submit"
     reviewForm.append(submitButton)
-    reviewForm.addEventListener("submit", handleReviewSubmission)
+    reviewForm.addEventListener("submit", ReviewForm.handleSubmit)
     // ReviewForm.appendContentField(reviewForm)
     // ReviewForm.appendSubmitButton(reviewForm)
     return reviewForm
@@ -118,6 +118,31 @@ class ReviewForm {
     reviewForm.dataset.userId = USER_ID;
 
     return reviewForm
+  }
+
+  static handleSubmit(e) {
+    e.preventDefault();
+
+    const rating = e.target.elements["rating"].value;
+    const content = e.target.elements["content"].value;
+    let postBody;
+
+    if(e.target.dataset.reviewId) {
+      const id = e.target.dataset.reviewId;
+      delete e.target.dataset.reviewId;
+
+      postBody = { rating, content };
+
+      Review.updateAndRender(id, postBody);
+    } else {
+      const gif_id = e.target.dataset.gifId;
+      const user_id = e.target.dataset.userId;
+      postBody = { user_id, rating, content, gif_id };
+
+      Review.createAndRender(postBody);
+    }
+
+    e.target.reset();
   }
 }
 

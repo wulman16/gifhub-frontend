@@ -143,30 +143,30 @@ function ratingToStars(rating) {
   return stars
 }
 
-function handleReviewSubmission(e) {
-  e.preventDefault();
+// function handleReviewSubmission(e) {
+//   e.preventDefault();
 
-  const rating = e.target.elements["rating"].value;
-  const content = e.target.elements["content"].value;
-  let postBody;
+//   const rating = e.target.elements["rating"].value;
+//   const content = e.target.elements["content"].value;
+//   let postBody;
 
-  if(e.target.dataset.reviewId) {
-    const id = e.target.dataset.reviewId;
-    delete e.target.dataset.reviewId;
+//   if(e.target.dataset.reviewId) {
+//     const id = e.target.dataset.reviewId;
+//     delete e.target.dataset.reviewId;
 
-    postBody = { rating, content };
+//     postBody = { rating, content };
 
-    Review.updateAndRender(id, postBody);
-  } else {
-    const gif_id = e.target.dataset.gifId;
-    const user_id = e.target.dataset.userId;
-    postBody = { user_id, rating, content, gif_id };
+//     Review.updateAndRender(id, postBody);
+//   } else {
+//     const gif_id = e.target.dataset.gifId;
+//     const user_id = e.target.dataset.userId;
+//     postBody = { user_id, rating, content, gif_id };
 
-    Review.createAndRender(postBody);
-  }
+//     Review.createAndRender(postBody);
+//   }
 
-  e.target.reset();
-}
+//   e.target.reset();
+// }
 
 function handleDeleteReview(e) {
   const id = e.target.dataset.id;
