@@ -45,19 +45,23 @@ class Review {
     content.append(date);
 
     if (data.user_id === USER_ID) {
+      const buttonContainer = document.createElement('div')
+      buttonContainer.className = "review-buttons"
+      content.append(buttonContainer)
+
       const deleteButton = document.createElement('button');
       deleteButton.dataset.id = data.id;
       deleteButton.textContent = "Delete";
       deleteButton.addEventListener('click', Review.handleDelete);
 
-      content.append(deleteButton);
+      buttonContainer.append(deleteButton);
 
       const editButton = document.createElement('button');
       editButton.dataset.id = data.id;
       editButton.textContent = "Edit";
       editButton.addEventListener('click', Review.handleEdit)
 
-      content.append(editButton);
+      buttonContainer.append(editButton);
     }
 
     return content;
