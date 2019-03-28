@@ -10,6 +10,7 @@ class Gif {
   static renderThumbnail(data) {
     const ul = document.getElementById("gif-list");
     const li = document.createElement("li");
+    li.className = "gif-thumbnail-card";
 
     const img = document.createElement("img");
     img.src = data.url;

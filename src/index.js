@@ -92,6 +92,10 @@ function renderDetails(data) {
   GIF_ID = data.id;
 
   const detailDialog = document.getElementById('detail-dialog')
+  const close = document.getElementById('exit-dialog')
+  close.addEventListener('click', e => {
+    detailDialog.close();
+  })
 
   if (typeof detailDialog.showModal === "function") {
     detailDialog.showModal()

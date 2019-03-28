@@ -45,19 +45,25 @@ class Review {
     content.append(date);
 
     if (data.user_id === USER_ID) {
-      const deleteButton = document.createElement('button');
-      deleteButton.dataset.id = data.id;
-      deleteButton.textContent = "Delete";
-      deleteButton.addEventListener('click', Review.handleDelete);
-
-      content.append(deleteButton);
+      const buttonContainer = document.createElement('div')
+      buttonContainer.className = "review-buttons"
+      content.append(buttonContainer)
 
       const editButton = document.createElement('button');
       editButton.dataset.id = data.id;
       editButton.textContent = "Edit";
+      editButton.classList = "btn-xs btn-default"
       editButton.addEventListener('click', Review.handleEdit)
 
-      content.append(editButton);
+      buttonContainer.append(editButton);
+
+      const deleteButton = document.createElement('button');
+      deleteButton.dataset.id = data.id;
+      deleteButton.textContent = "Delete";
+      deleteButton.classList = "btn-xs btn-default review-delete-button"
+      deleteButton.addEventListener('click', Review.handleDelete);
+
+      buttonContainer.append(deleteButton);
     }
 
     return content;
@@ -109,7 +115,7 @@ class Review {
 
   static handleDelete(e) {
     const id = e.target.dataset.id;
-    const review = e.target.parentNode;
+    const review = e.target.parentNode.parentNode;
 
     Adapter.delete('reviews', id)
 
@@ -121,15 +127,22 @@ class ReviewForm {
   static render() {
     const reviewForm = ReviewForm.initialize()
 
-    reviewForm.append(RatingField.render())
+    const heading = document.createElement('h3')
+    heading.innerText = "Your Voice Matters:"
+    reviewForm.append(heading);
 
     const contentField = document.createElement("textarea");
     contentField.name = "content";
     contentField.placeholder = "Type your review here!";
+    contentField.className = "form-control"
     reviewForm.append(contentField);
+
+    reviewForm.append(RatingField.render())
 
     const submitButton = document.createElement("input")
     submitButton.type = "submit"
+    submitButton.classList = "btn-default"
+    submitButton.style.width = "auto"
     reviewForm.append(submitButton)
     reviewForm.addEventListener("submit", ReviewForm.handleSubmit)
     // ReviewForm.appendContentField(reviewForm)
@@ -140,6 +153,7 @@ class ReviewForm {
   static initialize() {
     const reviewForm = document.createElement("form");
     reviewForm.id = "review-form";
+    // reviewForm.className = "form"
     reviewForm.dataset.gifId = GIF_ID;
     reviewForm.dataset.userId = USER_ID;
 
@@ -168,6 +182,7 @@ class ReviewForm {
       Review.createAndRender(postBody);
     }
 
+    console.log(e.target)
     e.target.reset();
   }
 }
@@ -176,11 +191,14 @@ class RatingField {
   static render() {
     let ratingField = document.createElement("select");
     ratingField.name = "rating";
+    ratingField.className = "form-control"
+    ratingField.style.width = "auto"
     // RatingField.appendOptions(ratingField)
     const defaultOption = document.createElement("option");
     defaultOption.value = "";
     defaultOption.selected = true;
     defaultOption.disabled = true;
+    defaultOption.defaultSelected = true;
     defaultOption.textContent = "Select a Rating";
     ratingField.append(defaultOption);
 

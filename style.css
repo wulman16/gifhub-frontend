@@ -10,10 +10,20 @@
   border: 1px solid black;
 } */
 
-.container {
+/* .container {
   display: grid;
   grid-template-columns: 6fr 2fr;
   height: 100%;
+} */
+
+#site-container {
+  /* border: 1px solid black; */
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+#sign-in-dialog {
+  border-radius: 7px;
 }
 
 .gif-thumbnail {
@@ -31,11 +41,21 @@
 
 #thumbnail-panel {
   margin: 0 auto;
+  /* border: 1px solid black; */
+  /* padding: 0 50px; */
+  /* max-width: 900px; */
 }
 
 .gif-detail {
-  width: 150px;
-  height: 150px;
+  width: 250px;
+  height: 250px;
+  margin: 0 auto;
+}
+
+#gif-details {
+  /* border: 1px solid black; */
+  text-align: center;
+  margin-bottom: 10px;
 }
 
 ul {
@@ -43,11 +63,14 @@ ul {
   text-align: center;
 }
 
-li {
+.gif-thumbnail-card {
   display: inline-block;
   vertical-align: top;
   margin: 10px;
-  border: 10px solid black;
+  /* border: 10px solid black; */
+  border: 10px solid rgb(45, 45, 45);
+  overflow: hidden;
+  width: 240px;
 }
 
 .to-show {
@@ -61,11 +84,19 @@ li {
 
 #new-gif-form {
   text-align: center;
+  margin: 20px 0;
+}
+
+#new-gif-submit-button {
+  margin-left: 5px;
 }
 
 #new-gif-form-message {
   display: inline-block;
   font-size: 1.5em;
+  /* line-height: 1.7em; */
+  /* margin: 15px 0; */
+  margin-right: 5px;
 }
 
 #new-gif-title, #new-gif-url {
@@ -73,16 +104,21 @@ li {
   width: 150px;
 }
 
-#gif-thumbnail-title, #gif-thumbnail-rating {
-  display: inline-block;
-  margin: 3px;
+#gif-thumbnail-text {
   margin-bottom: 20px;
+}
+
+#gif-thumbnail-title, #gif-thumbnail-rating {
+  /* display: inline-block; */
+  display: inline;
+  margin: 3px;
   font-size: 1.2em;
 }
 
 #sign-in-dialog {
   font-size: 1.5em;
   font-weight: 700;
+  color: rgb(45, 45, 45);
 }
 
 #sign-in-name {
@@ -90,6 +126,109 @@ li {
   font-weight: 700;
 }
 
+#exit-dialog {
+  float: right;
+  /* position: fixed; */
+  position: sticky;
+  z-index: 2;
+  /* position: relative; */
+  top: 0;
+  /* right: 0; */
+  /* background-color: white; */
+  background-color: #eee;
+  width: 1.5em;
+  line-height: 1.5em;
+  text-align: center;
+  border-radius: 100%;
+}
+
+#exit-dialog:hover,
+#exit-dialog:focus {
+  cursor: pointer;
+  color: #ccc;
+  background-color: white;
+  /* border: 2px solid black; */
+}
+
 #greeting {
   font-size: 1.3em;
+  /* float: right; */
+  text-align: center;
+}
+
+#detail-dialog {
+  border-radius: 7px;
+  position: fixed;
+  /* max-width: 400px; */
+  width: 400px;
+  /* top: 5%; */
+  /* height: 450px; */
+  height: 85%;
+  /* min-height: max-content; */
+  overflow: auto;
+}
+
+#review-form-container {
+  /* border: 1px solid black; */
+  /* text-align: center; */
+  padding: 0 10px;
+  margin-bottom: 10px;
+}
+
+#review-form-container textarea,
+#review-form-container select,
+#review-form-container input {
+  margin-bottom: 10px;
+}
+
+#review-form-container select,
+#review-form-container input {
+  display: inline-block;
+  margin-right: 10px;
+}
+
+#review-form-container textarea {
+  display: block;
+  width: 250px;
+  height: 60px;
+}
+
+.review-card {
+  border: 1px solid black;
+  border-radius: 7px;
+  margin-bottom: 10px;
+  padding: 0 10px;
+  /* padding-bottom: 10px; */
+}
+
+.review-card:last-of-type {
+  margin-bottom: 0;
+}
+
+.review-buttons {
+  padding-bottom: 20px;
+}
+
+.btn-default {
+  font-weight: 700;
+}
+
+#sort-dropdown {
+  width: auto;
+  float: right;
+  display: block;
+  /* position: absolute; */
+  /* right: 0; */
+  /* right: 25px; */
+  /* left: 25px; */
+}
+
+#sort-dropdown-container {
+  margin-bottom: 10px;
+  /* border: 1px solid black; */
+  height: 45px;
+}
+
+.review-delete-button {
+  margin-left: 5px;
 }
