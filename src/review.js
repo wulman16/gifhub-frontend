@@ -7,7 +7,7 @@ class Review {
     const reviews = document.getElementById("reviews");
     reviews.innerHTML = "";
 
-    Review.renderForm();
+    reviews.append(ReviewForm.render());
 
     Adapter.get(GIFS_ENDPOINT, GIF_ID)
       .then(data => {
@@ -65,22 +65,26 @@ class Review {
 
     reviews.append(content);
   }
-
-  static renderForm() {
-    const reviewList = document.getElementById("reviews");
-    // const reviewForm = new ReviewForm()
-    reviewList.append(ReviewForm.render());
-  }
 }
 
 class ReviewForm {
   static render() {
     const reviewForm = ReviewForm.initialize()
-    const ratingField = RatingField.initialize()
+    // const ratingField = RatingField.initialize()
 
-    reviewForm.append(ratingField)
-    ReviewForm.appendContentField(reviewForm)
-    ReviewForm.appendSubmitButton(reviewForm)
+    reviewForm.append(RatingField.render())
+
+    const contentField = document.createElement("textarea");
+    contentField.name = "content";
+    contentField.placeholder = "Type your review here!";
+    reviewForm.append(contentField);
+
+    const submitButton = document.createElement("input")
+    submitButton.type = "submit"
+    reviewForm.append(submitButton)
+    reviewForm.addEventListener("submit", handleReviewSubmission)
+    // ReviewForm.appendContentField(reviewForm)
+    // ReviewForm.appendSubmitButton(reviewForm)
     return reviewForm
   }
 
@@ -92,57 +96,27 @@ class ReviewForm {
 
     return reviewForm
   }
-
-  static appendContentField(reviewForm) {
-    const contentField = document.createElement("textarea");
-    contentField.name = "content";
-    contentField.placeholder = "Type your review here!";
-    reviewForm.append(contentField);
-  }
-
-  static appendSubmitButton(reviewForm) {
-    const submitButton = document.createElement("input")
-    submitButton.type = "submit"
-    reviewForm.append(submitButton)
-    reviewForm.addEventListener("submit", handleReviewSubmission)
-  }
 }
 
 class RatingField {
-  static initialize() {
+  static render() {
     let ratingField = document.createElement("select");
     ratingField.name = "rating";
-    RatingField.appendOptions(ratingField)
-
-    return ratingField
-  }
-
-  static appendOptions(ratingField) {
-    RatingField.appendDefaultOption(ratingField)
-    RatingField.appendRatingOptions(ratingField)
-  }
-
-  static appendDefaultOption(ratingField) {
+    // RatingField.appendOptions(ratingField)
     const defaultOption = document.createElement("option");
     defaultOption.value = "";
     defaultOption.selected = true;
     defaultOption.disabled = true;
     defaultOption.textContent = "Select a Rating";
     ratingField.append(defaultOption);
-  }
 
-  static appendRatingOptions(ratingField) {
-    // for (let i = 1; i <= 5; i++) {
-    //   const option = document.createElement("option");
-    //   option.value = i;
-    //   option.textContent = i;
-    //   ratingField.append(option);
-    // }
     for (let i = 5; i >= 0; i--) {
       const option = document.createElement("option");
       option.value = i;
       option.textContent = ratingToStars(i);
       ratingField.append(option);
     }
+
+    return ratingField
   }
 }
