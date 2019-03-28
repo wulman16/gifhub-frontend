@@ -49,19 +49,21 @@ class Review {
       buttonContainer.className = "review-buttons"
       content.append(buttonContainer)
 
-      const deleteButton = document.createElement('button');
-      deleteButton.dataset.id = data.id;
-      deleteButton.textContent = "Delete";
-      deleteButton.addEventListener('click', Review.handleDelete);
-
-      buttonContainer.append(deleteButton);
-
       const editButton = document.createElement('button');
       editButton.dataset.id = data.id;
       editButton.textContent = "Edit";
+      editButton.classList = "btn-xs btn-default"
       editButton.addEventListener('click', Review.handleEdit)
 
       buttonContainer.append(editButton);
+
+      const deleteButton = document.createElement('button');
+      deleteButton.dataset.id = data.id;
+      deleteButton.textContent = "Delete";
+      deleteButton.classList = "btn-xs btn-default review-delete-button"
+      deleteButton.addEventListener('click', Review.handleDelete);
+
+      buttonContainer.append(deleteButton);
     }
 
     return content;
@@ -113,7 +115,7 @@ class Review {
 
   static handleDelete(e) {
     const id = e.target.dataset.id;
-    const review = e.target.parentNode;
+    const review = e.target.parentNode.parentNode;
 
     Adapter.delete('reviews', id)
 
@@ -139,7 +141,8 @@ class ReviewForm {
 
     const submitButton = document.createElement("input")
     submitButton.type = "submit"
-    submitButton.className = "btn-default"
+    submitButton.classList = "btn-default"
+    submitButton.style.width = "auto"
     reviewForm.append(submitButton)
     reviewForm.addEventListener("submit", ReviewForm.handleSubmit)
     // ReviewForm.appendContentField(reviewForm)
@@ -150,6 +153,7 @@ class ReviewForm {
   static initialize() {
     const reviewForm = document.createElement("form");
     reviewForm.id = "review-form";
+    // reviewForm.className = "form"
     reviewForm.dataset.gifId = GIF_ID;
     reviewForm.dataset.userId = USER_ID;
 

@@ -135,7 +135,7 @@ ul {
   top: 0;
   /* right: 0; */
   /* background-color: white; */
-  background-color: #ccc;
+  background-color: #eee;
   width: 1.5em;
   line-height: 1.5em;
   text-align: center;
@@ -178,7 +178,6 @@ ul {
 #review-form-container textarea,
 #review-form-container select,
 #review-form-container input {
-  /* display: block; */
   margin-bottom: 10px;
 }
 
@@ -196,6 +195,7 @@ ul {
 
 .review-card {
   border: 1px solid black;
+  border-radius: 7px;
   margin-bottom: 10px;
   padding: 0 10px;
   /* padding-bottom: 10px; */
@@ -227,4 +227,8 @@ ul {
   margin-bottom: 10px;
   /* border: 1px solid black; */
   height: 45px;
+}
+
+.review-delete-button {
+  margin-left: 5px;
 }
