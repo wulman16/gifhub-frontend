@@ -43,11 +43,13 @@ ul {
   text-align: center;
 }
 
-li {
+.gif-thumbnail-card {
   display: inline-block;
   vertical-align: top;
   margin: 10px;
   border: 10px solid black;
+  overflow: hidden;
+  width: 220px;
 }
 
 .to-show {
@@ -73,10 +75,15 @@ li {
   width: 150px;
 }
 
-#gif-thumbnail-title, #gif-thumbnail-rating {
-  display: inline-block;
-  margin: 3px;
+#gif-thumbnail-text {
+
   margin-bottom: 20px;
+}
+
+#gif-thumbnail-title, #gif-thumbnail-rating {
+  /* display: inline-block; */
+  display: inline;
+  margin: 3px;
   font-size: 1.2em;
 }
 
