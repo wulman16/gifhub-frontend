@@ -118,6 +118,7 @@ function renderDetails(data) {
   gifDetails.append(gif);
 
   const reviewFormContainer = document.getElementById('review-form-container')
+  reviewFormContainer.innerHTML = "";
   reviewFormContainer.append(ReviewForm.render())
 
   // const reviewButton = document.createElement('button')
