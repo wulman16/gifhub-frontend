@@ -75,7 +75,7 @@ class Review {
     });
   }
 
-  static updateAndRender(postBody) {
+  static updateAndRender(id, postBody) {
     Adapter.update(REVIEWS_ENDPOINT, id, postBody)
     .then(data => {
       const reviewCard = document.getElementById('reviews').querySelector(".edited")

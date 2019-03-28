@@ -156,7 +156,7 @@ function handleReviewSubmission(e) {
 
     postBody = { rating, content };
 
-    Review.updateAndRender(postBody);
+    Review.updateAndRender(id, postBody);
   } else {
     const gif_id = e.target.dataset.gifId;
     const user_id = e.target.dataset.userId;
