@@ -80,12 +80,19 @@ ul {
 
 #new-gif-form {
   text-align: center;
+  margin: 20px 0;
+}
+
+#new-gif-submit-button {
+  margin-left: 5px;
 }
 
 #new-gif-form-message {
   display: inline-block;
   font-size: 1.5em;
-  margin: 15px 0;
+  /* line-height: 1.7em; */
+  /* margin: 15px 0; */
+  margin-right: 5px;
 }
 
 #new-gif-title, #new-gif-url {
@@ -152,7 +159,7 @@ ul {
   width: 400px;
   /* top: 5%; */
   /* height: 450px; */
-  height: 80%;
+  height: 85%;
   /* min-height: max-content; */
   overflow: auto;
 }

@@ -132,12 +132,14 @@ class ReviewForm {
     const contentField = document.createElement("textarea");
     contentField.name = "content";
     contentField.placeholder = "Type your review here!";
+    contentField.className = "form-control"
     reviewForm.append(contentField);
 
     reviewForm.append(RatingField.render())
 
     const submitButton = document.createElement("input")
     submitButton.type = "submit"
+    submitButton.className = "btn-default"
     reviewForm.append(submitButton)
     reviewForm.addEventListener("submit", ReviewForm.handleSubmit)
     // ReviewForm.appendContentField(reviewForm)
@@ -185,6 +187,8 @@ class RatingField {
   static render() {
     let ratingField = document.createElement("select");
     ratingField.name = "rating";
+    ratingField.className = "form-control"
+    ratingField.style.width = "auto"
     // RatingField.appendOptions(ratingField)
     const defaultOption = document.createElement("option");
     defaultOption.value = "";
