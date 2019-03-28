@@ -60,7 +60,7 @@ function handleGifSubmission(e) {
   const postBody = { title, url };
 
   Adapter.create('gifs', postBody)
-    .then(Gif.renderAll());
+    .then(Gif.renderAll);
 }
 
 function sortGifs(e) {
@@ -117,6 +117,10 @@ function renderDetails(data) {
   gif.className = "gif-detail";
   gifDetails.append(gif);
 
+  const reviewFormContainer = document.getElementById('review-form-container')
+  reviewFormContainer.innerHTML = "";
+  reviewFormContainer.append(ReviewForm.render())
+
   // const reviewButton = document.createElement('button')
   // reviewButton.innerText = "Add Review"
   // reviewButton.addEventListener('click', handleReviewButtonClick)
@@ -144,6 +148,7 @@ function handleReviewSubmission(e) {
 
   const rating = e.target.elements["rating"].value;
   const content = e.target.elements["content"].value;
+  let postBody;
 
   if(e.target.dataset.reviewId) {
     const id = e.target.dataset.reviewId;
@@ -151,30 +156,13 @@ function handleReviewSubmission(e) {
 
     postBody = { rating, content };
 
-    Adapter.update('reviews', id, postBody)
-    .then(data => {
-      const reviewCard = document.getElementById('reviews').querySelector(".edited")
-      const rating = reviewCard.querySelector('.review-rating')
-      const content = reviewCard.querySelector('.review-content')
-
-      rating.textContent = ratingToStars(data.rating)
-      content.textContent = data.content
-
-      reviewCard.classList.remove("edited")
-    })
+    Review.updateAndRender(postBody);
   } else {
     const gif_id = e.target.dataset.gifId;
     const user_id = e.target.dataset.userId;
-    const postBody = { user_id, rating, content, gif_id };
+    postBody = { user_id, rating, content, gif_id };
 
-    Adapter.create('reviews', postBody)
-    .then(data => {
-      if (data.errors) {
-        console.error(data.errors);
-      } else {
-        Review.renderAll();
-      }
-    });
+    Review.createAndRender(postBody);
   }
 
   e.target.reset();
