@@ -88,3 +88,8 @@ li {
   font-size: 1em;
   font-weight: 700;
 }
+
+#exit-dialog {
+  float: right;
+  display: inline;
+}
