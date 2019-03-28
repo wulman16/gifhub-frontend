@@ -68,3 +68,13 @@ li {
   margin: 3px;
   margin-bottom: 20px;
 }
+
+#sign-in-dialog {
+  font-size: 1.5em;
+  font-weight: 700;
+}
+
+#sign-in-name {
+  font-size: 1em;
+  font-weight: 700;
+}
