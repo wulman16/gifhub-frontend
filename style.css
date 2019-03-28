@@ -2,7 +2,7 @@
   font-family: 'Work Sans', sans-serif;
 }
 
-.avg-rating, #site-name {
+.avg-rating, #site-name, #gif-thumbnail-title {
   font-weight: 700;
 }
 
@@ -60,4 +60,9 @@ li {
 
 #new-gif-form-message {
   display: inline-block;
+}
+
+#gif-thumbnail-title, #gif-thumbnail-rating {
+  display: inline-block;
+  margin: 5px;
 }
