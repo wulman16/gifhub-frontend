@@ -60,7 +60,7 @@ function handleGifSubmission(e) {
   const postBody = { title, url };
 
   Adapter.create('gifs', postBody)
-    .then(Gif.renderAll());
+    .then(Gif.renderAll);
 }
 
 function sortGifs(e) {
