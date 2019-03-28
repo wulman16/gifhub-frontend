@@ -22,6 +22,10 @@
   margin: 0 auto;
 }
 
+#sign-in-dialog {
+  border-radius: 7px;
+}
+
 .gif-thumbnail {
   width: 200px;
   height: 200px;
