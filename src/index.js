@@ -156,31 +156,13 @@ function handleReviewSubmission(e) {
 
     postBody = { rating, content };
 
-    Adapter.update('reviews', id, postBody)
-    .then(data => {
-      const reviewCard = document.getElementById('reviews').querySelector(".edited")
-      const rating = reviewCard.querySelector('.review-rating')
-      const content = reviewCard.querySelector('.review-content')
-
-      rating.textContent = ratingToStars(data.rating)
-      content.textContent = data.content
-
-      reviewCard.classList.remove("edited")
-    })
+    Review.updateAndRender(postBody);
   } else {
     const gif_id = e.target.dataset.gifId;
     const user_id = e.target.dataset.userId;
-    const postBody = { user_id, rating, content, gif_id };
+    postBody = { user_id, rating, content, gif_id };
 
-    Adapter.create('reviews', postBody)
-    .then(data => {
-      if (data.errors) {
-        console.error(data.errors);
-      } else {
-        const reviews = document.getElementById('reviews')
-        reviews.prepend(Review.render(data));
-      }
-    });
+    Review.createAndRender(postBody);
   }
 
   e.target.reset();

@@ -62,6 +62,32 @@ class Review {
 
     return content;
   }
+
+  static createAndRender(postBody) {
+    Adapter.create(REVIEWS_ENDPOINT, postBody)
+    .then(data => {
+      if (data.errors) {
+        console.error(data.errors);
+      } else {
+        const reviews = document.getElementById('reviews')
+        reviews.prepend(Review.render(data));
+      }
+    });
+  }
+
+  static updateAndRender(postBody) {
+    Adapter.update(REVIEWS_ENDPOINT, id, postBody)
+    .then(data => {
+      const reviewCard = document.getElementById('reviews').querySelector(".edited")
+      const rating = reviewCard.querySelector('.review-rating')
+      const content = reviewCard.querySelector('.review-content')
+
+      rating.textContent = ratingToStars(data.rating)
+      content.textContent = data.content
+
+      reviewCard.classList.remove("edited")
+    })
+  }
 }
 
 class ReviewForm {
