@@ -141,6 +141,8 @@ ul {
 
 #greeting {
   font-size: 1.3em;
+  /* float: right; */
+  text-align: center;
 }
 
 #detail-dialog {
