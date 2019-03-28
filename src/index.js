@@ -216,7 +216,7 @@ function propertyComparator(prop, order) {
 }
 
 function fetchSortedGifs(sortFunction) {
-  Adapter.get('gifs')
+  Adapter.get(GIFS_ENDPOINT)
     .then(data => data.sort(sortFunction))
     .then(sorted => sorted.forEach(gif => Gif.renderThumbnail(gif)))
 }
