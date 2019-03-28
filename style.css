@@ -91,5 +91,10 @@ li {
 
 #exit-dialog {
   float: right;
-  display: inline;
+}
+
+#exit-dialog:hover,
+#exit-dialog:focus {
+  cursor: pointer;
+  color: #ccc;
 }
