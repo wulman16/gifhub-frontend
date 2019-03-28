@@ -10,10 +10,16 @@
   border: 1px solid black;
 } */
 
-.container {
+/* .container {
   display: grid;
   grid-template-columns: 6fr 2fr;
   height: 100%;
+} */
+
+#site-container {
+  /* border: 1px solid black; */
+  max-width: 900px;
+  margin: 0 auto;
 }
 
 .gif-thumbnail {
@@ -31,6 +37,9 @@
 
 #thumbnail-panel {
   margin: 0 auto;
+  /* border: 1px solid black; */
+  /* padding: 0 50px; */
+  /* max-width: 900px; */
 }
 
 .gif-detail {
@@ -54,9 +63,10 @@ ul {
   display: inline-block;
   vertical-align: top;
   margin: 10px;
-  border: 10px solid black;
+  /* border: 10px solid black; */
+  border: 10px solid rgb(45, 45, 45);
   overflow: hidden;
-  width: 220px;
+  width: 240px;
 }
 
 .to-show {
@@ -75,6 +85,7 @@ ul {
 #new-gif-form-message {
   display: inline-block;
   font-size: 1.5em;
+  margin: 15px 0;
 }
 
 #new-gif-title, #new-gif-url {
@@ -96,6 +107,7 @@ ul {
 #sign-in-dialog {
   font-size: 1.5em;
   font-weight: 700;
+  color: rgb(45, 45, 45);
 }
 
 #sign-in-name {
@@ -184,10 +196,22 @@ ul {
   padding-bottom: 20px;
 }
 
-/* .review-buttons button:first-child {
-  padding-right: 5px;
-} */
+.btn-default {
+  font-weight: 700;
+}
 
-/* .review-card button {
-  padding: 10px;
-} */
+#sort-dropdown {
+  width: auto;
+  float: right;
+  display: block;
+  /* position: absolute; */
+  /* right: 0; */
+  /* right: 25px; */
+  /* left: 25px; */
+}
+
+#sort-dropdown-container {
+  margin-bottom: 10px;
+  /* border: 1px solid black; */
+  height: 45px;
+}
