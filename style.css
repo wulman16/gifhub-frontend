@@ -76,7 +76,6 @@ ul {
 }
 
 #gif-thumbnail-text {
-
   margin-bottom: 20px;
 }
 
@@ -99,6 +98,12 @@ ul {
 
 #exit-dialog {
   float: right;
+  /* position: fixed; */
+  position: sticky;
+  z-index: 2;
+  /* position: relative; */
+  top: 0;
+  /* right: 0; */
 }
 
 #exit-dialog:hover,
@@ -109,4 +114,14 @@ ul {
 
 #greeting {
   font-size: 1.3em;
+}
+
+#detail-dialog {
+  /* border-radius: 5px; */
+  position: fixed;
+  /* top: 5%; */
+  /* height: 450px; */
+  height: 80%;
+  /* min-height: max-content; */
+  overflow: auto;
 }
