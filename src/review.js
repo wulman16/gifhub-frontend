@@ -7,8 +7,6 @@ class Review {
     const reviews = document.getElementById("reviews");
     reviews.innerHTML = "";
 
-    // reviews.append(ReviewForm.render());
-
     Adapter.get(GIFS_ENDPOINT, GIF_ID)
       .then(data => {
         // Sort by most recently updated review
@@ -18,12 +16,11 @@ class Review {
           return (dateB - dateA);
         })
 
-        sorted.forEach(Review.render);
+        sorted.forEach(content => reviews.append(Review.render(content)));
       })
   }
 
   static render(data) {
-    const reviews = document.getElementById("reviews");
     const content = document.createElement("div");
     content.className = "review-card"
 
@@ -63,7 +60,7 @@ class Review {
       content.append(editButton);
     }
 
-    reviews.append(content);
+    return content;
   }
 }
 
