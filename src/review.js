@@ -48,20 +48,22 @@ class Review {
       const deleteButton = document.createElement('button');
       deleteButton.dataset.id = data.id;
       deleteButton.textContent = "Delete";
-      deleteButton.addEventListener('click', handleDeleteReview);
+      deleteButton.addEventListener('click', Review.handleDelete);
 
       content.append(deleteButton);
 
       const editButton = document.createElement('button');
       editButton.dataset.id = data.id;
       editButton.textContent = "Edit";
-      editButton.addEventListener('click', handleEditReview)
+      editButton.addEventListener('click', Review.handleEdit)
 
       content.append(editButton);
     }
 
     return content;
   }
+
+  /* Methods to handle new review creation and update */
 
   static createAndRender(postBody) {
     Adapter.create(REVIEWS_ENDPOINT, postBody)
@@ -88,12 +90,36 @@ class Review {
       reviewCard.classList.remove("edited")
     })
   }
+
+  /* Event handlers for button clicks on a Review */
+
+  static handleEdit(e) {
+    const form = document.getElementById('review-form');
+    const id = e.target.dataset.id;
+
+    Adapter.get('reviews', id)
+      .then(data => {
+        form.elements["rating"].value = data.rating;
+        form.elements["content"].value = data.content;
+        form.dataset.reviewId = data.id;
+      })
+
+    e.target.parentNode.classList += " edited"
+  }
+
+  static handleDelete(e) {
+    const id = e.target.dataset.id;
+    const review = e.target.parentNode;
+
+    Adapter.delete('reviews', id)
+
+    review.parentNode.removeChild(review);
+  }
 }
 
 class ReviewForm {
   static render() {
     const reviewForm = ReviewForm.initialize()
-    // const ratingField = RatingField.initialize()
 
     reviewForm.append(RatingField.render())
 
