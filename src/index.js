@@ -115,11 +115,13 @@ function renderDetails(data) {
   gifDetails.innerHTML = "";
 
   const title = document.createElement("h3");
+  title.className = 'details-title'
   title.textContent = data.title;
   gifDetails.append(title);
 
   const avgRating = document.createElement("h3");
-  avgRating.textContent = `Average Rating: ${parseFloat(data.avg_rating).toFixed(1)}`;
+  avgRating.className = 'details-avg-rating'
+  avgRating.textContent = `Average Rating: ${parseFloat(data.avg_rating).toFixed(1)} stars`;
   if (data.reviews.length > 0) {
     gifDetails.append(avgRating);
   }

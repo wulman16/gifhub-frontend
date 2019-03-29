@@ -47,8 +47,8 @@
 }
 
 .gif-detail {
-  width: 250px;
-  height: 250px;
+  width: 300px;
+  height: 300px;
   margin: 0 auto;
 }
 
@@ -79,7 +79,7 @@ ul {
 
 #site-name {
   text-align: center;
-  font-size: 3.5em;
+  font-size: 4.5em;
 }
 
 #new-gif-form {
@@ -230,4 +230,13 @@ ul {
 
 .review-delete-button {
   margin-left: 5px;
+}
+
+.details-title {
+  font-size: 2em;
+}
+
+.details-avg-rating {
+  font-size: 1.3em;
+  font-weight: 400;
 }
