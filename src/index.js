@@ -60,7 +60,8 @@ function handleGifSubmission(e) {
   const postBody = { title, url };
 
   Adapter.create('gifs', postBody)
-    .then(Gif.renderAll);
+    .then(Gif.renderAll)
+    .catch(() => alert("That GIF has already been added."));
 }
 
 function sortGifs(e) {
