@@ -28,7 +28,7 @@ class Gif {
 
     const rating = document.createElement('p')
     rating.id = "gif-thumbnail-rating"
-    rating.textContent = parseFloat(data.avg_rating).toFixed(1)
+    rating.textContent = parseFloat(data.avg_rating).toFixed(1) + ' \u2605'
     info.append(rating)
 
     li.append(info)
