@@ -18,6 +18,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const form = document.getElementById("new-gif-form");
   form.addEventListener("submit", handleGifSubmission);
+
+  window.addEventListener('click', e => {
+    // console.log(e.target.id)
+    if (e.target.id === "detail-dialog") {
+      document.getElementById('detail-dialog').close();
+    }
+  })
 });
 
 /**
