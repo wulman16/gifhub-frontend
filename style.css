@@ -128,25 +128,25 @@ ul {
 
 #exit-dialog {
   float: right;
-  /* position: fixed; */
   position: sticky;
   z-index: 2;
-  /* position: relative; */
   top: 0;
-  /* right: 0; */
+  font-weight: bold;
   /* background-color: white; */
-  background-color: #eee;
+  /* background-color: #fff; */
+  opacity: 0.3;
   width: 1.5em;
   line-height: 1.5em;
   text-align: center;
   border-radius: 100%;
+  transition: 0.4s;
 }
 
 #exit-dialog:hover,
 #exit-dialog:focus {
   cursor: pointer;
-  color: #ccc;
-  background-color: white;
+  opacity: 1;
+  background-color: #eee;
   /* border: 2px solid black; */
 }
 
