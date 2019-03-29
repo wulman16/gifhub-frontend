@@ -86,6 +86,7 @@ class Review {
   static updateAndRender(id, postBody) {
     Adapter.update(REVIEWS_ENDPOINT, id, postBody)
     .then(data => {
+      // console.log(data)
       const reviewCard = document.getElementById('reviews').querySelector(".edited")
       const rating = reviewCard.querySelector('.review-rating')
       const content = reviewCard.querySelector('.review-content')
@@ -110,7 +111,7 @@ class Review {
         form.dataset.reviewId = data.id;
       })
 
-    e.target.parentNode.classList += " edited"
+    e.target.parentNode.parentNode.classList += " edited"
   }
 
   static handleDelete(e) {
@@ -182,7 +183,7 @@ class ReviewForm {
       Review.createAndRender(postBody);
     }
 
-    console.log(e.target)
+    // console.log(e.target)
     e.target.reset();
   }
 }
