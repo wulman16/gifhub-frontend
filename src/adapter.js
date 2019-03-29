@@ -17,7 +17,14 @@ class Adapter {
         "Content-Type": "application/json"
       },
       body: JSON.stringify(data)
-    }).then(response => response.json());
+    })
+    .then(response => {
+      if (response.ok) {
+        return response.json();
+      } else {
+        throw new Error()
+      }
+    })
   }
 
   static update(endpoint, id, data) {
